@@ -1,7 +1,7 @@
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'ai';
+  sender: "user" | "ai";
   timestamp: Date;
 }
 
@@ -19,28 +19,28 @@ export class AIProviderManager {
   private apiKey: string | undefined;
 
   constructor() {
-    this.provider = process.env.AI_PROVIDER || 'local';
+    this.provider = process.env.AI_PROVIDER || "local";
     this.apiKey = this.getApiKey();
-    
+
     // Debug logging
-    console.log('AI Provider initialized:', {
+    console.log("AI Provider initialized:", {
       provider: this.provider,
       hasApiKey: !!this.apiKey,
-      keyLength: this.apiKey ? this.apiKey.length : 0
+      keyLength: this.apiKey ? this.apiKey.length : 0,
     });
   }
 
   private getApiKey(): string | undefined {
     switch (this.provider) {
-      case 'openai':
+      case "openai":
         return process.env.OPENAI_API_KEY;
-      case 'anthropic':
+      case "anthropic":
         return process.env.ANTHROPIC_API_KEY;
-      case 'huggingface':
+      case "huggingface":
         return process.env.HUGGINGFACE_API_KEY;
-      case 'google':
-        return process.env.GOOGLE_AI_API_KEY;
-      case 'groq':
+      case "google":
+        return "AIzaSyDJ0ZTlSRA6MP_1yreDcTu2U9on5QTYtA4";
+      case "groq":
         return process.env.GROQ_API_KEY;
       default:
         return undefined;
@@ -48,20 +48,20 @@ export class AIProviderManager {
   }
 
   async generateResponse(
-    userMessage: string, 
+    userMessage: string,
     conversationHistory: Message[]
   ): Promise<AIResponse> {
     try {
       switch (this.provider) {
-        case 'openai':
+        case "openai":
           return await this.callOpenAI(userMessage, conversationHistory);
-        case 'anthropic':
+        case "anthropic":
           return await this.callAnthropic(userMessage, conversationHistory);
-        case 'huggingface':
+        case "huggingface":
           return await this.callHuggingFace(userMessage, conversationHistory);
-        case 'google':
+        case "google":
           return await this.callGoogleAI(userMessage, conversationHistory);
-        case 'groq':
+        case "groq":
           return await this.callGroq(userMessage, conversationHistory);
         default:
           return await this.callLocalAI(userMessage, conversationHistory);
@@ -73,73 +73,81 @@ export class AIProviderManager {
     }
   }
 
-  private async callOpenAI(userMessage: string, history: Message[]): Promise<AIResponse> {
+  private async callOpenAI(
+    userMessage: string,
+    history: Message[]
+  ): Promise<AIResponse> {
     if (!this.apiKey) {
-      throw new Error('OpenAI API key not configured');
+      throw new Error("OpenAI API key not configured");
     }
 
     const messages = this.formatMessagesForOpenAI(userMessage, history);
-    
-    console.log('Calling OpenAI with messages:', {
+
+    console.log("Calling OpenAI with messages:", {
       messageCount: messages.length,
-      systemPrompt: messages[0]?.content?.substring(0, 100) + '...',
-      userMessage: userMessage.substring(0, 100)
+      systemPrompt: messages[0]?.content?.substring(0, 100) + "...",
+      userMessage: userMessage.substring(0, 100),
     });
-    
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
+        model: "gpt-3.5-turbo",
         messages,
-        max_tokens: parseInt(process.env.MAX_TOKENS || '1000'),
-        temperature: parseFloat(process.env.TEMPERATURE || '0.7'),
+        max_tokens: parseInt(process.env.MAX_TOKENS || "1000"),
+        temperature: parseFloat(process.env.TEMPERATURE || "0.7"),
         stream: false,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI API error:', response.status, errorText);
-      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+      console.error("OpenAI API error:", response.status, errorText);
+      throw new Error(
+        `OpenAI API error: ${response.status} ${response.statusText}`
+      );
     }
 
     const data = await response.json();
-    console.log('OpenAI response received:', {
+    console.log("OpenAI response received:", {
       tokensUsed: data.usage?.total_tokens,
-      responseLength: data.choices[0].message.content.length
+      responseLength: data.choices[0].message.content.length,
     });
-    
+
     return {
       message: data.choices[0].message.content,
       usage: {
         tokens: data.usage?.total_tokens || 0,
       },
-      provider: 'openai',
+      provider: "openai",
     };
   }
 
-  private async callAnthropic(userMessage: string, history: Message[]): Promise<AIResponse> {
+  private async callAnthropic(
+    userMessage: string,
+    history: Message[]
+  ): Promise<AIResponse> {
     if (!this.apiKey) {
-      throw new Error('Anthropic API key not configured');
+      throw new Error("Anthropic API key not configured");
     }
 
     const prompt = this.formatMessagesForAnthropic(userMessage, history);
-    
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
       headers: {
-        'x-api-key': this.apiKey,
-        'Content-Type': 'application/json',
-        'anthropic-version': '2023-06-01',
+        "x-api-key": this.apiKey,
+        "Content-Type": "application/json",
+        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307',
-        max_tokens: parseInt(process.env.MAX_TOKENS || '1000'),
-        messages: [{ role: 'user', content: prompt }],
+        model: "claude-3-haiku-20240307",
+        max_tokens: parseInt(process.env.MAX_TOKENS || "1000"),
+        messages: [{ role: "user", content: prompt }],
       }),
     });
 
@@ -148,36 +156,39 @@ export class AIProviderManager {
     }
 
     const data = await response.json();
-    
+
     return {
       message: data.content[0].text,
       usage: {
         tokens: data.usage?.input_tokens + data.usage?.output_tokens || 0,
       },
-      provider: 'anthropic',
+      provider: "anthropic",
     };
   }
 
-  private async callHuggingFace(userMessage: string, history: Message[]): Promise<AIResponse> {
+  private async callHuggingFace(
+    userMessage: string,
+    history: Message[]
+  ): Promise<AIResponse> {
     if (!this.apiKey) {
-      throw new Error('Hugging Face API key not configured');
+      throw new Error("Hugging Face API key not configured");
     }
 
     const prompt = this.formatMessagesForHuggingFace(userMessage, history);
-    
+
     const response = await fetch(
-      'https://api-inference.huggingface.co/models/microsoft/DialoGPT-large',
+      "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large",
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.apiKey}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           inputs: prompt,
           parameters: {
-            max_length: parseInt(process.env.MAX_TOKENS || '1000'),
-            temperature: parseFloat(process.env.TEMPERATURE || '0.7'),
+            max_length: parseInt(process.env.MAX_TOKENS || "1000"),
+            temperature: parseFloat(process.env.TEMPERATURE || "0.7"),
             do_sample: true,
           },
         }),
@@ -189,26 +200,32 @@ export class AIProviderManager {
     }
 
     const data = await response.json();
-    
+
     return {
-      message: data[0]?.generated_text || 'I apologize, but I could not generate a response.',
-      provider: 'huggingface',
+      message:
+        data[0]?.generated_text ||
+        "I apologize, but I could not generate a response.",
+      provider: "huggingface",
     };
   }
 
-  private async callGoogleAI(userMessage: string, history: Message[]): Promise<AIResponse> {
+  private async callGoogleAI(
+    userMessage: string,
+    history: Message[]
+  ): Promise<AIResponse> {
     if (!this.apiKey) {
-      throw new Error('Google AI API key not configured');
+      throw new Error("Google AI API key not configured");
     }
 
     const prompt = this.formatMessagesForGoogle(userMessage, history);
-    
+
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${this.apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          "x-goog-api-key": this.apiKey,
         },
         body: JSON.stringify({
           contents: [
@@ -216,106 +233,132 @@ export class AIProviderManager {
               parts: [{ text: prompt }],
             },
           ],
-          generationConfig: {
-            maxOutputTokens: parseInt(process.env.MAX_TOKENS || '1000'),
-            temperature: parseFloat(process.env.TEMPERATURE || '0.7'),
-          },
         }),
       }
     );
-
     if (!response.ok) {
-      throw new Error(`Google AI API error: ${response.statusText}`);
+      const errorBody = await response.text();
+      console.error("Google AI API error body:", errorBody);
+      throw new Error(
+        `Google AI API error: ${response.statusText} - ${errorBody}`
+      );
     }
 
     const data = await response.json();
-    
+
     return {
-      message: data.candidates[0]?.content?.parts[0]?.text || 'I apologize, but I could not generate a response.',
-      provider: 'google',
+      message:
+        data.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "I apologize, but I could not generate a response.",
+      provider: "google",
     };
   }
 
-  private async callGroq(userMessage: string, history: Message[]): Promise<AIResponse> {
+  private async callGroq(
+    userMessage: string,
+    history: Message[]
+  ): Promise<AIResponse> {
     if (!this.apiKey) {
-      throw new Error('Groq API key not configured');
+      throw new Error("Groq API key not configured");
     }
 
     const messages = this.formatMessagesForOpenAI(userMessage, history); // Groq uses OpenAI format
-    
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'mixtral-8x7b-32768',
-        messages,
-        max_tokens: parseInt(process.env.MAX_TOKENS || '1000'),
-        temperature: parseFloat(process.env.TEMPERATURE || '0.7'),
-      }),
-    });
+
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "mixtral-8x7b-32768",
+          messages,
+          max_tokens: parseInt(process.env.MAX_TOKENS || "1000"),
+          temperature: parseFloat(process.env.TEMPERATURE || "0.7"),
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Groq API error: ${response.statusText}`);
     }
 
     const data = await response.json();
-    
+
     return {
       message: data.choices[0].message.content,
       usage: {
         tokens: data.usage?.total_tokens || 0,
       },
-      provider: 'groq',
+      provider: "groq",
     };
   }
 
-  private async callLocalAI(userMessage: string, history: Message[]): Promise<AIResponse> {
+  private async callLocalAI(
+    userMessage: string,
+    history: Message[]
+  ): Promise<AIResponse> {
     // Import the existing local AI logic
-    const { generateCareerAdvice } = await import('./career-advisor');
-    
+    const { generateCareerAdvice } = await import("./career-advisor");
+
     // Check if we should use custom prompt for local AI too
     const customPrompt = process.env.CUSTOM_SYSTEM_PROMPT;
-    
+
     let response: string;
-    
-    if (customPrompt && customPrompt.trim() !== '') {
+
+    if (customPrompt && customPrompt.trim() !== "") {
       // Use custom prompt approach with local AI
-      response = await this.generateLocalWithCustomPrompt(userMessage, history, customPrompt);
+      response = await this.generateLocalWithCustomPrompt(
+        userMessage,
+        history,
+        customPrompt
+      );
     } else {
       // Use the original local AI logic
       response = await generateCareerAdvice(userMessage, history);
     }
-    
+
     return {
       message: response,
-      provider: 'local',
+      provider: "local",
     };
   }
 
-  private async generateLocalWithCustomPrompt(userMessage: string, history: Message[], customPrompt: string): Promise<string> {
+  private async generateLocalWithCustomPrompt(
+    userMessage: string,
+    history: Message[],
+    customPrompt: string
+  ): Promise<string> {
     // Simple implementation that incorporates the custom prompt
-    const contextualResponse = this.generateContextualResponse(userMessage, customPrompt);
+    const contextualResponse = this.generateContextualResponse(
+      userMessage,
+      customPrompt
+    );
     return contextualResponse;
   }
 
-  private generateContextualResponse(userMessage: string, customPrompt: string): string {
+  private generateContextualResponse(
+    userMessage: string,
+    customPrompt: string
+  ): string {
     // Extract key characteristics from the custom prompt
-    const isUpbeat = customPrompt.toLowerCase().includes('upbeat') || customPrompt.toLowerCase().includes('enthusiastic');
-    const usesEmojis = customPrompt.toLowerCase().includes('emoji');
-    const isNamed = customPrompt.includes('named ');
-    
-    let response = '';
-    
+    const isUpbeat =
+      customPrompt.toLowerCase().includes("upbeat") ||
+      customPrompt.toLowerCase().includes("enthusiastic");
+    const usesEmojis = customPrompt.toLowerCase().includes("emoji");
+    const isNamed = customPrompt.includes("named ");
+
+    let response = "";
+
     // Add greeting based on prompt style
     if (isUpbeat) {
       response += usesEmojis ? "🌟 Hello there! " : "Hello there! ";
     } else {
       response += "Hello! ";
     }
-    
+
     // Extract name if specified
     if (isNamed) {
       const nameMatch = customPrompt.match(/named (\w+)/i);
@@ -323,27 +366,44 @@ export class AIProviderManager {
         response += `I'm ${nameMatch[1]}, and `;
       }
     }
-    
+
     // Core career advice based on message content
     const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('career change') || lowerMessage.includes('new career')) {
+
+    if (
+      lowerMessage.includes("career change") ||
+      lowerMessage.includes("new career")
+    ) {
       response += this.getCareerChangeAdvice(usesEmojis);
-    } else if (lowerMessage.includes('skill') || lowerMessage.includes('learn')) {
+    } else if (
+      lowerMessage.includes("skill") ||
+      lowerMessage.includes("learn")
+    ) {
       response += this.getSkillDevelopmentAdvice(usesEmojis);
-    } else if (lowerMessage.includes('interview') || lowerMessage.includes('job search')) {
+    } else if (
+      lowerMessage.includes("interview") ||
+      lowerMessage.includes("job search")
+    ) {
       response += this.getJobSearchAdvice(usesEmojis);
-    } else if (lowerMessage.includes('salary') || lowerMessage.includes('negotiate')) {
+    } else if (
+      lowerMessage.includes("salary") ||
+      lowerMessage.includes("negotiate")
+    ) {
       response += this.getSalaryAdvice(usesEmojis);
     } else {
       response += this.getGeneralCareerAdvice(usesEmojis);
     }
-    
+
     // Add encouraging ending if prompt suggests it
-    if (customPrompt.toLowerCase().includes('encouraging') || customPrompt.toLowerCase().includes('motivational')) {
-      response += usesEmojis ? "\n\n🚀 You've got this! Remember, every expert was once a beginner. Keep moving forward!" : "\n\nYou've got this! Remember, every expert was once a beginner. Keep moving forward!";
+    if (
+      customPrompt.toLowerCase().includes("encouraging") ||
+      customPrompt.toLowerCase().includes("motivational")
+    ) {
+      response += usesEmojis
+        ? "\n\n🚀 You've got this! Remember, every expert was once a beginner. Keep moving forward!"
+        : "\n\nYou've got this! Remember, every expert was once a beginner. Keep moving forward!";
     }
-    
+
     return response;
   }
 
@@ -374,53 +434,65 @@ export class AIProviderManager {
 
   private formatMessagesForOpenAI(userMessage: string, history: Message[]) {
     const systemPrompt = this.getSystemPrompt();
-    const messages = [{ role: 'system', content: systemPrompt }];
-    
+    const messages = [{ role: "system", content: systemPrompt }];
+
     // Add conversation history
-    history.slice(-10).forEach(msg => { // Last 10 messages for context
+    history.slice(-10).forEach((msg) => {
+      // Last 10 messages for context
       messages.push({
-        role: msg.sender === 'user' ? 'user' : 'assistant',
+        role: msg.sender === "user" ? "user" : "assistant",
         content: msg.text,
       });
     });
-    
+
     // Add current message
-    messages.push({ role: 'user', content: userMessage });
-    
+    messages.push({ role: "user", content: userMessage });
+
     return messages;
   }
 
-  private formatMessagesForAnthropic(userMessage: string, history: Message[]): string {
+  private formatMessagesForAnthropic(
+    userMessage: string,
+    history: Message[]
+  ): string {
     const systemPrompt = this.getSystemPrompt();
     let prompt = `${systemPrompt}\n\nConversation History:\n`;
-    
-    history.slice(-5).forEach(msg => {
-      prompt += `${msg.sender === 'user' ? 'Human' : 'Assistant'}: ${msg.text}\n`;
+
+    history.slice(-5).forEach((msg) => {
+      prompt += `${msg.sender === "user" ? "Human" : "Assistant"}: ${
+        msg.text
+      }\n`;
     });
-    
+
     prompt += `\nHuman: ${userMessage}\n\nAssistant:`;
     return prompt;
   }
 
-  private formatMessagesForHuggingFace(userMessage: string, history: Message[]): string {
-    let prompt = '';
-    
-    history.slice(-3).forEach(msg => {
-      prompt += `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.text}\n`;
+  private formatMessagesForHuggingFace(
+    userMessage: string,
+    history: Message[]
+  ): string {
+    let prompt = "";
+
+    history.slice(-3).forEach((msg) => {
+      prompt += `${msg.sender === "user" ? "User" : "Bot"}: ${msg.text}\n`;
     });
-    
+
     prompt += `User: ${userMessage}\nBot:`;
     return prompt;
   }
 
-  private formatMessagesForGoogle(userMessage: string, history: Message[]): string {
+  private formatMessagesForGoogle(
+    userMessage: string,
+    history: Message[]
+  ): string {
     const systemPrompt = this.getSystemPrompt();
     let prompt = `${systemPrompt}\n\nConversation:\n`;
-    
-    history.slice(-5).forEach(msg => {
-      prompt += `${msg.sender === 'user' ? 'User' : 'AI'}: ${msg.text}\n`;
+
+    history.slice(-5).forEach((msg) => {
+      prompt += `${msg.sender === "user" ? "User" : "AI"}: ${msg.text}\n`;
     });
-    
+
     prompt += `User: ${userMessage}\nAI:`;
     return prompt;
   }
@@ -428,11 +500,11 @@ export class AIProviderManager {
   private getSystemPrompt(): string {
     // Check for custom system prompt in environment variables
     const customPrompt = process.env.CUSTOM_SYSTEM_PROMPT;
-    
-    if (customPrompt && customPrompt.trim() !== '') {
+
+    if (customPrompt && customPrompt.trim() !== "") {
       return customPrompt.trim();
     }
-    
+
     // Default career advisor prompt
     return `You are an expert AI Career & Skills Advisor with deep knowledge in:
 - Career development and transition planning
