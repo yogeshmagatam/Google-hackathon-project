@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Career-specific fields
+  currentRole   String?
+  experience    String?
+  location      String?
+  industry      String?
+  careerGoals   String?
+  
+  accounts      Account[]
+  sessions      Session[]
+  assessments   Assessment[]
+  resumes       Resume[]
+  jobBookmarks  JobBookmark[]
+  progressLogs  ProgressLog[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Assessment {
+  id               String   @id @default(cuid())
+  userId           String
+  technicalSkills  String   // JSON string
+  softSkills       String   // JSON string
+  careerGoals      String   // JSON string
+  experience       String
+  interests        String   // JSON string
+  score            Float?
+  completedAt      DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Resume {
+  id          String   @id @default(cuid())
+  userId      String
+  fileName    String
+  fileUrl     String
+  extractedText String?
+  analysis    String?  // JSON string with AI analysis
+  skills      String?  // JSON string with extracted skills
+  uploadedAt  DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model JobBookmark {
+  id          String   @id @default(cuid())
+  userId      String
+  jobTitle    String
+  company     String
+  location    String?
+  salary      String?
+  description String?
+  url         String?
+  fitScore    Float?
+  appliedAt   DateTime?
+  bookmarkedAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProgressLog {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // "skill", "assessment", "learning", "job_application"
+  data      String   // JSON string
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

@@ -12,11 +12,12 @@ interface AIResponse {
     cost?: number;
   };
   provider: string;
+  metadata?: Record<string, any>;
 }
 
 export class AIProviderManager {
-  private provider: string;
-  private apiKey: string | undefined;
+  protected provider: string;
+  protected apiKey: string | undefined;
 
   constructor() {
     this.provider = process.env.AI_PROVIDER || "local";
@@ -30,6 +31,15 @@ export class AIProviderManager {
     });
   }
 
+  setProvider(provider: string): void {
+    this.provider = provider;
+    this.apiKey = this.getApiKey();
+    console.log("AI Provider changed to:", {
+      provider: this.provider,
+      hasApiKey: !!this.apiKey,
+    });
+  }
+
   private getApiKey(): string | undefined {
     switch (this.provider) {
       case "openai":
@@ -39,7 +49,7 @@ export class AIProviderManager {
       case "huggingface":
         return process.env.HUGGINGFACE_API_KEY;
       case "google":
-        return "AIzaSyDJ0ZTlSRA6MP_1yreDcTu2U9on5QTYtA4";
+        return process.env.GOOGLE_AI_API_KEY || "AIzaSyDJ0ZTlSRA6MP_1yreDcTu2U9on5QTYtA4";
       case "groq":
         return process.env.GROQ_API_KEY;
       default:
@@ -52,23 +62,56 @@ export class AIProviderManager {
     conversationHistory: Message[]
   ): Promise<AIResponse> {
     try {
+      let response: AIResponse;
+      
       switch (this.provider) {
         case "openai":
-          return await this.callOpenAI(userMessage, conversationHistory);
+          response = await this.callOpenAI(userMessage, conversationHistory);
+          break;
         case "anthropic":
-          return await this.callAnthropic(userMessage, conversationHistory);
+          response = await this.callAnthropic(userMessage, conversationHistory);
+          break;
         case "huggingface":
-          return await this.callHuggingFace(userMessage, conversationHistory);
+          response = await this.callHuggingFace(userMessage, conversationHistory);
+          break;
         case "google":
-          return await this.callGoogleAI(userMessage, conversationHistory);
+          response = await this.callGoogleAI(userMessage, conversationHistory);
+          break;
         case "groq":
-          return await this.callGroq(userMessage, conversationHistory);
+          response = await this.callGroq(userMessage, conversationHistory);
+          break;
         default:
-          return await this.callLocalAI(userMessage, conversationHistory);
+          response = await this.callLocalAI(userMessage, conversationHistory);
+          break;
       }
+      
+      // If we got a quota exceeded response, don't throw an error - just return it
+      if (response.metadata?.quotaExceeded) {
+        console.warn(`${this.provider} quota exceeded, returning quota message`);
+        return response;
+      }
+      
+      return response;
+      
     } catch (error) {
       console.error(`Error with ${this.provider} provider:`, error);
-      // Fallback to local AI
+      
+      // For quota errors that weren't handled gracefully, provide a better message
+      if (error instanceof Error && (
+        error.message.includes('quota') || 
+        error.message.includes('rate limit') ||
+        error.message.includes('429') ||
+        error.message.includes('RESOURCE_EXHAUSTED')
+      )) {
+        console.warn(`${this.provider} quota/rate limit error, falling back to local AI`);
+        const fallbackResponse = await this.callLocalAI(userMessage, conversationHistory);
+        return {
+          ...fallbackResponse,
+          message: `⚠️ AI service quota reached. Using local processing: ${fallbackResponse.message}`,
+        };
+      }
+      
+      // Fallback to local AI for other errors
       return await this.callLocalAI(userMessage, conversationHistory);
     }
   }
@@ -238,10 +281,34 @@ export class AIProviderManager {
     );
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("Google AI API error body:", errorBody);
-      throw new Error(
-        `Google AI API error: ${response.statusText} - ${errorBody}`
-      );
+      
+      try {
+        const errorData = JSON.parse(errorBody);
+        
+        // Handle quota exceeded error specifically
+        if (errorData.error?.code === 429 || errorData.error?.status === "RESOURCE_EXHAUSTED") {
+          console.warn("Google AI quota exceeded, returning fallback message");
+          return {
+            message: "I apologize, but I've reached my daily limit for AI responses. Please try again tomorrow, or consider upgrading to a paid plan for unlimited access. In the meantime, I can still help you with basic career guidance based on our conversation.",
+            provider: "google",
+            metadata: { quotaExceeded: true }
+          };
+        }
+        
+        // Handle other specific errors
+        if (errorData.error?.code === 403) {
+          console.error("Google AI API access denied - check API key");
+          throw new Error("API access denied. Please check your API key configuration.");
+        }
+        
+        console.error("Google AI API error:", errorData);
+        throw new Error(`Google AI API error: ${errorData.error?.message || response.statusText}`);
+        
+      } catch (parseError) {
+        // If we can't parse the error, log the raw body and throw generic error
+        console.error("Google AI API error (unparseable):", errorBody);
+        throw new Error(`Google AI API error: ${response.statusText}`);
+      }
     }
 
     const data = await response.json();

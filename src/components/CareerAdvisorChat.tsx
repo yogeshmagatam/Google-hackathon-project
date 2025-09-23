@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Bot, Briefcase, Target, BookOpen, TrendingUp, RotateCcw } from 'lucide-react';
+import { Send, User, Bot, Briefcase, Target, TrendingUp, RotateCcw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface Message {
@@ -230,7 +230,6 @@ const CareerAdvisorChat = () => {
   const quickActions = [
     { icon: Briefcase, text: "Career Change Advice", query: "I'm thinking about changing careers. Can you help me explore options and create a transition plan?" },
     { icon: Target, text: "Skills Assessment", query: "Can you help me assess my current skills and identify areas for improvement in my field?" },
-    { icon: BookOpen, text: "Learning Path", query: "What should I learn to advance in my career? Please suggest specific courses and certifications." },
     { icon: TrendingUp, text: "Industry Trends", query: "What are the current trends and future outlook in my industry? How can I stay competitive?" },
   ];
 

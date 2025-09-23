@@ -81,8 +81,6 @@ export async function generateCareerAdvice(userMessage: string, conversationHist
       return generateSkillsAssessment(userMessage, intent.details);
     case 'industry_inquiry':
       return generateIndustryInsights(userMessage, intent.details);
-    case 'learning_path':
-      return generateLearningPath(userMessage, intent.details);
     case 'general_career':
       return generateGeneralCareerAdvice(userMessage, context);
     default:
@@ -109,12 +107,6 @@ function analyzeIntent(message: string): { type: string; details: any } {
   if (lowerMessage.includes('industry') || lowerMessage.includes('sector') || 
       lowerMessage.includes('field') || lowerMessage.includes('trends')) {
     return { type: 'industry_inquiry', details: extractIndustryContext(message) };
-  }
-  
-  // Learning path indicators
-  if (lowerMessage.includes('learn') || lowerMessage.includes('study') || 
-      lowerMessage.includes('course') || lowerMessage.includes('training')) {
-    return { type: 'learning_path', details: extractLearningContext(message) };
   }
   
   // General career advice
@@ -169,18 +161,6 @@ function extractIndustryContext(message: string): any {
   );
   
   return { industry: mentionedIndustry };
-}
-
-function extractLearningContext(message: string): any {
-  const lowerMessage = message.toLowerCase();
-  const learningTypes = [];
-  
-  if (lowerMessage.includes('online') || lowerMessage.includes('course')) learningTypes.push('online_courses');
-  if (lowerMessage.includes('certification') || lowerMessage.includes('cert')) learningTypes.push('certifications');
-  if (lowerMessage.includes('degree') || lowerMessage.includes('university')) learningTypes.push('formal_education');
-  if (lowerMessage.includes('bootcamp')) learningTypes.push('bootcamps');
-  
-  return { learningTypes, urgency: lowerMessage.includes('quick') || lowerMessage.includes('fast') ? 'high' : 'normal' };
 }
 
 function generateCareerChangeAdvice(message: string, details: any): string {
@@ -349,79 +329,6 @@ function generateIndustryInsights(message: string, details: any): string {
   insights += "💡 **Want specific insights about a particular industry or role? Just ask!**";
   
   return insights;
-}
-
-function generateLearningPath(message: string, details: any): string {
-  const { learningTypes, urgency } = details;
-  
-  let path = "# 📚 Personalized Learning Path\\n\\n";
-  
-  if (urgency === 'high') {
-    path += "🚀 **Fast-Track Learning Plan** (3-6 months)\\n\\n";
-  } else {
-    path += "📈 **Comprehensive Learning Plan** (6-12 months)\\n\\n";
-  }
-  
-  path += "## 🎯 Learning Strategy Framework\\n\\n";
-  
-  path += "### **Phase 1: Foundation Building** (Month 1-2)\\n";
-  path += "• **Assess Current Knowledge:** Take skill assessments\\n";
-  path += "• **Set Clear Goals:** Define specific learning objectives\\n";
-  path += "• **Choose Learning Style:** Visual, auditory, kinesthetic, or reading\\n";
-  path += "• **Create Schedule:** Dedicated learning time blocks\\n\\n";
-  
-  path += "### **Phase 2: Core Skill Development** (Month 3-6)\\n";
-  path += "• **Structured Courses:** Online platforms or formal education\\n";
-  path += "• **Hands-on Practice:** Projects and real-world application\\n";
-  path += "• **Peer Learning:** Study groups and forums\\n";
-  path += "• **Regular Assessment:** Track progress and adjust plan\\n\\n";
-  
-  path += "### **Phase 3: Advanced Application** (Month 7-12)\\n";
-  path += "• **Specialization:** Focus on niche areas\\n";
-  path += "• **Portfolio Building:** Showcase your skills\\n";
-  path += "• **Mentorship:** Guidance from experts\\n";
-  path += "• **Certification:** Validate your knowledge\\n\\n";
-  
-  path += "## 🛠️ Learning Resources by Type\\n\\n";
-  
-  path += "### **📱 Online Learning Platforms**\\n";
-  path += "• **Coursera** - University-level courses with certificates\\n";
-  path += "• **Udemy** - Practical skills and technical training\\n";
-  path += "• **LinkedIn Learning** - Professional development focus\\n";
-  path += "• **Pluralsight** - Technology and creative skills\\n";
-  path += "• **Khan Academy** - Free foundational courses\\n\\n";
-  
-  path += "### **🏆 Certification Programs**\\n";
-  path += "• **Technology:** AWS, Google Cloud, Microsoft, Cisco\\n";
-  path += "• **Project Management:** PMP, Scrum Master, Agile\\n";
-  path += "• **Marketing:** Google Ads, HubSpot, Facebook Blueprint\\n";
-  path += "• **Data Science:** Tableau, SAS, IBM Data Science\\n";
-  path += "• **Finance:** CFA, FRM, CPA\\n\\n";
-  
-  path += "### **🎓 Formal Education Options**\\n";
-  path += "• **Bootcamps** - Intensive, job-focused training (3-6 months)\\n";
-  path += "• **Professional Certificates** - University-backed programs (6-12 months)\\n";
-  path += "• **Master's Degrees** - Advanced expertise (1-2 years)\\n";
-  path += "• **MBA Programs** - Leadership and business strategy (2 years)\\n\\n";
-  
-  path += "### **🤝 Community Learning**\\n";
-  path += "• **Meetup Groups** - Local professional gatherings\\n";
-  path += "• **Professional Associations** - Industry-specific communities\\n";
-  path += "• **Online Forums** - Reddit, Stack Overflow, Discord\\n";
-  path += "• **Conferences & Webinars** - Latest industry insights\\n\\n";
-  
-  path += "## 📊 Learning Success Metrics\\n\\n";
-  path += "Track your progress with these indicators:\\n\\n";
-  path += "• **Knowledge Retention:** Quiz scores and practical application\\n";
-  path += "• **Skill Application:** Successfully completed projects\\n";
-  path += "• **Recognition:** Certificates, badges, or endorsements\\n";
-  path += "• **Career Impact:** Job opportunities or advancement\\n";
-  path += "• **Network Growth:** Professional connections made\\n\\n";
-  
-  path += "💡 **Pro Tip:** The most effective learning combines theory with practice. For every hour of learning, spend at least 30 minutes applying the knowledge in real scenarios.\\n\\n";
-  path += "What specific skills or areas would you like to focus your learning plan on?";
-  
-  return path;
 }
 
 function generateGeneralCareerAdvice(message: string, context: any): string {
