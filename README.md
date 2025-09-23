@@ -18,7 +18,7 @@ A comprehensive web application that provides personalized career guidance and s
 - **Career level assessment** (entry/mid/senior/executive)
 
 
-### 💼 4. Job Recommendations Engine
+### 💼 3. Job Recommendations Engine
 - **AI-powered job matching** based on user profile
 - **Fit score calculation** (skill matching + career level)
 - **Real-time job filtering** (high-fit, remote, salary)
@@ -263,5 +263,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ for career development and professional growth**
+
 
 
