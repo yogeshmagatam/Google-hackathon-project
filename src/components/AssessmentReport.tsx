@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { TrendingUp, Target, BookOpen, Users, Award, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface AssessmentResults {
@@ -40,7 +40,7 @@ const AssessmentReport = ({ results, onStartNewAssessment }: AssessmentReportPro
   });
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev: { [key: string]: boolean }) => ({
       ...prev,
       [section]: !prev[section]
     }));

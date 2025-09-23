@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot, Briefcase, Target, BookOpen, TrendingUp, RotateCcw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
@@ -38,6 +38,7 @@ const CareerAdvisorChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [apiStatus, setApiStatus] = useState<{provider: string; online: boolean} | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -51,6 +52,15 @@ const CareerAdvisorChat = () => {
     "Can you help me prepare for job interviews?",
     "What learning resources do you recommend?",
   ];
+
+  // Helper function to format timestamp consistently
+  const formatTimestamp = (date: Date): string => {
+    if (!isMounted) {
+      // Return a placeholder during SSR to avoid hydration mismatch
+      return '--:--:-- --';
+    }
+    return date.toLocaleTimeString();
+  };
 
   // Rotate placeholder text every 3 seconds
   useEffect(() => {
@@ -71,6 +81,8 @@ const CareerAdvisorChat = () => {
 
   // Load chat history from localStorage on component mount
   useEffect(() => {
+    setIsMounted(true);
+    
     const savedMessages = localStorage.getItem('career-advisor-chat-history');
     if (savedMessages) {
       try {
@@ -340,7 +352,7 @@ const CareerAdvisorChat = () => {
                 <p className="whitespace-pre-wrap">{message.text}</p>
               )}
               <p className={`text-xs mt-2 flex items-center justify-between ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
-                <span>{message.timestamp.toLocaleTimeString()}</span>
+                <span>{formatTimestamp(message.timestamp)}</span>
                 {message.sender === 'ai' && message.provider && message.provider !== 'system' && (
                   <span className="flex items-center gap-1">
                     {message.responseTime && (
