@@ -82,7 +82,7 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
     setResults(prev => ({ ...prev, experience }));
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -94,6 +94,23 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
         experience: results.experience || '',
         interests: results.interests || [],
       };
+
+      try {
+        // Save to database
+        const response = await fetch('/api/assessment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(completeResults)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Assessment saved with score:', result.score);
+        }
+      } catch (error) {
+        console.error('Failed to save assessment:', error);
+      }
+
       onComplete(completeResults);
     }
   };

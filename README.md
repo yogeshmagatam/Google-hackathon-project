@@ -1,64 +1,150 @@
-# 🎯 AI Career & Skills Advisor
+# 🎯 AI Career & Skills Advisor - Enhanced Edition
 
-A comprehensive web application that provides personalized career guidance and skills development recommendations using AI technology.
+A comprehensive web application that provides personalized career guidance and skills development recommendations using AI technology. This enhanced version includes **5 major new features** that transform it into a complete career development platform.
 
-## ✨ Features
+## ✨ New Features Added
+
+### 🔐 1. User Authentication & Persistent Profiles
+- **NextAuth.js integration** with Google/GitHub OAuth
+- **Persistent user sessions** - no more data loss on refresh
+- **User profiles** with career-specific fields
+- **Secure data storage** with Prisma ORM
+
+### 📄 2. Resume Upload & AI Analysis
+- **PDF resume upload** with drag-and-drop interface
+- **AI-powered text extraction** and analysis
+- **Skill identification** (technical, soft skills, tools)
+- **Comprehensive scoring** with improvement recommendations
+- **Career level assessment** (entry/mid/senior/executive)
+
+### 📊 3. Progress Tracking Dashboard
+- **Visual analytics** with interactive charts
+- **Skills progress over time** with trend analysis
+- **Assessment history** and score tracking
+- **Job application activity** monitoring
+- **Learning path progress** visualization
+
+### 💼 4. Job Recommendations Engine
+- **AI-powered job matching** based on user profile
+- **Fit score calculation** (skill matching + career level)
+- **Real-time job filtering** (high-fit, remote, salary)
+- **Job bookmarking** and application tracking
+- **Multiple job sources** integration ready
+
+### 🎓 5. Personalized Learning Paths
+- **AI-generated learning roadmaps** for any career goal
+- **Custom course recommendations** from top platforms
+- **Progress tracking** with milestone achievements
+- **Skill gap analysis** and targeted learning
+- **Interactive progress management**
+
+## 🚀 Original Features (Enhanced)
 
 ### 🤖 AI Career Chatbot
-- Interactive conversational AI for career guidance
-- Personalized advice based on user context
-- Industry insights and trends analysis
-- Career change guidance and support
-- Learning path recommendations
+- Enhanced with **multi-provider support** (OpenAI, Google AI, Anthropic, etc.)
+- **Conversation history** with search and organization
+- **Context-aware responses** based on user profile
+- **Quick action buttons** for common queries
 
 ### 📊 Skills Assessment
-- Comprehensive technical and soft skills evaluation
-- Multi-step assessment with progress tracking
-- Experience level and career goals analysis
-- Interest-based career matching
+- **Database integration** for result persistence
+- **Progress tracking** over multiple assessments
+- **Enhanced reporting** with visual analytics
+- **Career goal alignment** scoring
 
-### 📈 Personalized Reports
-- Detailed assessment results with visual analytics
-- Strengths and improvement areas identification
-- Tailored career path recommendations
-- Customized learning plans with resources
-- Action-oriented next steps
+### 📈 Assessment Reports
+- **Historical comparison** with previous assessments
+- **Trend analysis** and improvement tracking
+- **Action-oriented recommendations**
+- **Integration with learning paths**
 
-### 🎨 Modern UI/UX
-- Responsive design for all devices
-- Intuitive tab-based navigation
-- Real-time chat interface
-- Interactive assessment forms
-- Professional styling with Tailwind CSS
+## �️ Technology Stack
 
-## 🚀 Technology Stack
+- **Frontend**: Next.js 15 with TypeScript, Tailwind CSS
+- **Authentication**: NextAuth.js with OAuth providers
+- **Database**: Prisma ORM with SQLite (production-ready for PostgreSQL)
+- **AI Integration**: Multi-provider support (OpenAI, Google AI, Anthropic, etc.)
+- **File Processing**: PDF parsing with AI analysis
+- **Charts**: Recharts for data visualization
+- **UI Components**: Radix UI for accessible components
 
-- **Frontend**: Next.js 15 with TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **AI Integration**: Built-in career advisory logic
-- **Deployment**: Vercel-ready
+## � Installation & Setup
 
-## 🛠️ Installation & Setup
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn package manager
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd career-advisor-ai
-   ```
+### 1. Clone and Install
+```bash
+git clone <repository-url>
+cd career-advisor-ai
+npm install
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### 2. Environment Setup
+Create a `.env` file with the following variables:
 
-3. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+```env
+# Database
+DATABASE_URL="file:./dev.db"
 
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key-here-change-this-in-production
+
+# OAuth Providers (Get from Google/GitHub Developer Console)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+
+# AI Provider Configuration
+AI_PROVIDER=google
+GOOGLE_AI_API_KEY=your-google-ai-api-key
+OPENAI_API_KEY=your-openai-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+GROQ_API_KEY=your-groq-api-key
+
+# Optional: Job API Integration
+RAPIDAPI_KEY=your-rapidapi-key-for-job-apis
+
+# AI Settings
+MAX_TOKENS=1000
+TEMPERATURE=0.7
+```
+
+### 3. Database Setup
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev --name init
+
+# (Optional) View database in Prisma Studio
+npx prisma studio
+```
+
+### 4. OAuth Setup
+
+#### Google OAuth:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add `http://localhost:3000/api/auth/callback/google` to authorized redirect URIs
+
+#### GitHub OAuth:
+1. Go to GitHub → Settings → Developer settings → OAuth Apps
+2. Create a new OAuth App
+3. Set Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
+
+### 5. Run Development Server
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## 📱 How to Use
 
