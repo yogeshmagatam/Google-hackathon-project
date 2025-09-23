@@ -31,12 +31,6 @@ A comprehensive web application that provides personalized career guidance and s
 - **Job bookmarking** and application tracking
 - **Multiple job sources** integration ready
 
-### 🎓 5. Personalized Learning Paths
-- **AI-generated learning roadmaps** for any career goal
-- **Custom course recommendations** from top platforms
-- **Progress tracking** with milestone achievements
-- **Skill gap analysis** and targeted learning
-- **Interactive progress management**
 
 ## 🚀 Original Features (Enhanced)
 
@@ -275,3 +269,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ for career development and professional growth**
+
