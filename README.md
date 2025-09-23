@@ -17,12 +17,6 @@ A comprehensive web application that provides personalized career guidance and s
 - **Comprehensive scoring** with improvement recommendations
 - **Career level assessment** (entry/mid/senior/executive)
 
-### 📊 3. Progress Tracking Dashboard
-- **Visual analytics** with interactive charts
-- **Skills progress over time** with trend analysis
-- **Assessment history** and score tracking
-- **Job application activity** monitoring
-- **Learning path progress** visualization
 
 ### 💼 4. Job Recommendations Engine
 - **AI-powered job matching** based on user profile
@@ -269,4 +263,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ for career development and professional growth**
+
 
