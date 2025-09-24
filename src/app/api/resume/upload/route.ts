@@ -1,23 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { AIProviderManager } from '@/lib/ai-providers'
-import { cookies } from 'next/headers'
+import { requireAuth } from '@/lib/auth-helpers'
 
 const aiProvider = new AIProviderManager()
 
 export async function POST(request: NextRequest) {
   try {
-    // In Next.js 15, we need to await cookies before using getServerSession
-    const cookieStore = await cookies()
-    const session = await getServerSession(authOptions)
+    // Use auth helper to handle Next.js 15 session management
+    const authResult = await requireAuth(request)
     
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (authResult.error) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status })
     }
+    
+    const session = authResult.session!
 
     const formData = await request.formData()
     const file = formData.get('resume') as File
@@ -62,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     // Find user
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email }
+      where: { email: session.user?.email! }
     })
 
     if (!user) {

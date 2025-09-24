@@ -82,8 +82,8 @@ export function Sidebar({ isOpen, onClose, isMobile }: SidebarProps) {
 
   return (
     <div className="h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
-      {/* Header */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      {/* Header - Fixed */}
+      <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-gray-700">
         <button
           onClick={handleNewChat}
           className="w-full flex items-center gap-3 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
@@ -93,8 +93,8 @@ export function Sidebar({ isOpen, onClose, isMobile }: SidebarProps) {
         </button>
       </div>
 
-      {/* Search and Filters */}
-      <div className="p-4 space-y-3 border-b border-gray-200 dark:border-gray-700">
+      {/* Search and Filters - Fixed */}
+      <div className="flex-shrink-0 p-4 space-y-3 border-b border-gray-200 dark:border-gray-700">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -129,8 +129,8 @@ export function Sidebar({ isOpen, onClose, isMobile }: SidebarProps) {
         </div>
       </div>
 
-      {/* Conversations List */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Conversations List - Scrollable */}
+      <div className="flex-1 overflow-y-auto min-h-0">
         {filteredConversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-gray-500 dark:text-gray-400">
             <MessageCircle className="w-8 h-8 mb-2" />
@@ -155,8 +155,8 @@ export function Sidebar({ isOpen, onClose, isMobile }: SidebarProps) {
         )}
       </div>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+      {/* Footer - Fixed */}
+      <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-gray-700">
         <button className="w-full flex items-center gap-3 p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <Settings className="w-4 h-4" />
           <span className="text-sm">Settings</span>

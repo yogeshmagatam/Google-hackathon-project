@@ -17,12 +17,32 @@ export function ChatArea() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      const messagesContainer = messagesEndRef.current.parentElement?.parentElement;
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Add a small delay to ensure DOM updates are complete
+    const timeoutId = setTimeout(() => {
+      scrollToBottom();
+    }, 50);
+    
+    return () => clearTimeout(timeoutId);
   }, [currentConversation?.messages]);
+
+  // Also scroll when typing status changes
+  useEffect(() => {
+    if (isTyping) {
+      const timeoutId = setTimeout(() => {
+        scrollToBottom();
+      }, 50);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isTyping]);
 
   const handleSendMessage = async (content: string, attachments?: any[]) => {
     if (!content.trim()) return;
@@ -83,9 +103,9 @@ export function ChatArea() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-900">
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
+    <div className="h-full flex flex-col bg-white dark:bg-gray-900">
+      {/* Messages Area - Scrollable */}
+      <div className="flex-1 overflow-y-auto px-4 py-6 min-h-0">
         <div className="max-w-4xl mx-auto space-y-6">
           {currentConversation.messages.map((message) => (
             <ChatMessage key={message.id} message={message} />
@@ -104,8 +124,8 @@ export function ChatArea() {
         </div>
       </div>
 
-      {/* Input Area */}
-      <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      {/* Input Area - Fixed at bottom */}
+      <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
         <div className="max-w-4xl mx-auto p-4">
           <ChatInput
             onSendMessage={handleSendMessage}

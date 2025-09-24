@@ -101,7 +101,7 @@ export default function GeminiLayout() {
   return (
     <ConversationProvider>
       <AIProvider>
-        <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
           {isMobile && sidebarOpen && (
             <div 
               className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -109,119 +109,120 @@ export default function GeminiLayout() {
             />
           )}
 
-          {activeTab === 'chat' && (
-            <div className={cn(
-              "relative transition-all duration-300 ease-in-out",
-              sidebarOpen ? "w-80" : "w-0",
-              isMobile && "fixed top-0 left-0 h-full z-50"
-            )}>
-              <Sidebar 
-                isOpen={sidebarOpen} 
-                onClose={() => setSidebarOpen(false)}
-                isMobile={isMobile}
-              />
-            </div>
-          )}
-
-          <div className="flex-1 flex flex-col min-w-0">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-              <div className="flex items-center gap-3">
-                {activeTab === 'chat' && (
-                  <button
-                    onClick={toggleSidebar}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                    aria-label="Toggle sidebar"
-                  >
-                    {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                  </button>
-                )}
-                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Career Advisor AI
-                </h1>
-              </div>
-
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger asChild>
-                  <button className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <User className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {session?.user?.name || session?.user?.email}
-                    </span>
-                  </button>
-                </DropdownMenu.Trigger>
-
-                <DropdownMenu.Portal>
-                  <DropdownMenu.Content 
-                    className="min-w-[200px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-1"
-                    sideOffset={5}
-                  >
-                    <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md cursor-pointer">
-                      <Settings className="w-4 h-4" />
-                      Settings
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
-                    <DropdownMenu.Item 
-                      className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md cursor-pointer"
-                      onClick={() => signOut()}
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Sign Out
-                    </DropdownMenu.Item>
-                  </DropdownMenu.Content>
-                </DropdownMenu.Portal>
-              </DropdownMenu.Root>
-            </div>
-
-            <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-              <Tabs.List className="flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4">
-                <Tabs.Trigger 
-                  value="chat" 
-                  className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
+          {/* Header Bar */}
+          <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <div className="flex items-center gap-3">
+              {activeTab === 'chat' && (
+                <button
+                  onClick={toggleSidebar}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  aria-label="Toggle sidebar"
                 >
-                  <Home className="w-4 h-4" />
-                  Chat
-                </Tabs.Trigger>
+                  {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+              )}
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Career Advisor AI
+              </h1>
+            </div>
+
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild>
+                <button className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {session?.user?.name || session?.user?.email}
+                  </span>
+                </button>
+              </DropdownMenu.Trigger>
+
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content 
+                  className="min-w-[200px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-1"
+                  sideOffset={5}
+                >
+                  <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md cursor-pointer">
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
+                  <DropdownMenu.Item 
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md cursor-pointer"
+                    onClick={() => signOut()}
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+          </div>
+
+          {/* Tab Navigation */}
+          <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
+            <Tabs.List className="flex-shrink-0 flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4">
+              <Tabs.Trigger 
+                value="chat" 
+                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
+              >
+                <Home className="w-4 h-4" />
+                Chat
+              </Tabs.Trigger>
+              <Tabs.Trigger 
+                value="assessment" 
+                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
+              >
+                <BarChart3 className="w-4 h-4" />
+                Assessment
+              </Tabs.Trigger>
+              <Tabs.Trigger 
+                value="jobs" 
+                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
+              >
+                <Briefcase className="w-4 h-4" />
+                Jobs
+              </Tabs.Trigger>
+              <Tabs.Trigger 
+                value="resume" 
+                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
+              >
+                <FileText className="w-4 h-4" />
+                Resume
+              </Tabs.Trigger>
+              {assessmentResults && (
                 <Tabs.Trigger 
-                  value="assessment" 
+                  value="report" 
                   className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
                 >
                   <BarChart3 className="w-4 h-4" />
-                  Assessment
+                  Report
                 </Tabs.Trigger>
-                <Tabs.Trigger 
-                  value="jobs" 
-                  className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-                >
-                  <Briefcase className="w-4 h-4" />
-                  Jobs
-                </Tabs.Trigger>
-                <Tabs.Trigger 
-                  value="resume" 
-                  className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-                >
-                  <FileText className="w-4 h-4" />
-                  Resume
-                </Tabs.Trigger>
-                {assessmentResults && (
-                  <Tabs.Trigger 
-                    value="report" 
-                    className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-                  >
-                    <BarChart3 className="w-4 h-4" />
-                    Report
-                  </Tabs.Trigger>
-                )}
-              </Tabs.List>
+              )}
+            </Tabs.List>
 
-              <div className="flex-1 overflow-hidden">
+            {/* Content Area */}
+            <div className="flex-1 flex min-h-0">
+              {/* Sidebar for Chat Tab */}
+              {activeTab === 'chat' && (
+                <div className={cn(
+                  "flex-shrink-0 transition-all duration-300 ease-in-out",
+                  sidebarOpen ? "w-80" : "w-0",
+                  isMobile ? "fixed top-0 left-0 h-full z-50" : "relative"
+                )}>
+                  <Sidebar 
+                    isOpen={sidebarOpen} 
+                    onClose={() => setSidebarOpen(false)}
+                    isMobile={isMobile}
+                  />
+                </div>
+              )}
+
+              {/* Main Content */}
+              <div className="flex-1 min-w-0 h-full">
                 <Tabs.Content value="chat" className="h-full">
-                  <div className="flex h-full">
-                    <div className="flex-1">
-                      <ChatArea />
-                    </div>
-                  </div>
+                  <ChatArea />
                 </Tabs.Content>
 
                 <Tabs.Content value="assessment" className="h-full overflow-auto p-6">
@@ -248,8 +249,8 @@ export default function GeminiLayout() {
                   </Tabs.Content>
                 )}
               </div>
-            </Tabs.Root>
-          </div>
+            </div>
+          </Tabs.Root>
         </div>
       </AIProvider>
     </ConversationProvider>
