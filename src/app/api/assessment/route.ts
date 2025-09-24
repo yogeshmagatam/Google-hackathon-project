@@ -1,23 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { cookies } from 'next/headers'
+import { requireAuth } from '@/lib/auth-helpers'
 
 export async function POST(request: NextRequest) {
   try {
-    // In Next.js 15, we need to await cookies before using getServerSession
-    const cookieStore = await cookies()
-    const session = await getServerSession(authOptions)
+    // Use auth helper to handle Next.js 15 session management
+    const authResult = await requireAuth(request)
     
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (authResult.error) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status })
     }
+    
+    const session = authResult.session!
 
     const assessmentData = await request.json()
 
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email }
+      where: { email: session.user?.email! }
     })
 
     if (!user) {

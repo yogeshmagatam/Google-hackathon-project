@@ -61,59 +61,73 @@ export class AIProviderManager {
     userMessage: string,
     conversationHistory: Message[]
   ): Promise<AIResponse> {
-    try {
-      let response: AIResponse;
-      
-      switch (this.provider) {
-        case "openai":
-          response = await this.callOpenAI(userMessage, conversationHistory);
-          break;
-        case "anthropic":
-          response = await this.callAnthropic(userMessage, conversationHistory);
-          break;
-        case "huggingface":
-          response = await this.callHuggingFace(userMessage, conversationHistory);
-          break;
-        case "google":
-          response = await this.callGoogleAI(userMessage, conversationHistory);
-          break;
-        case "groq":
-          response = await this.callGroq(userMessage, conversationHistory);
-          break;
-        default:
-          response = await this.callLocalAI(userMessage, conversationHistory);
-          break;
-      }
-      
-      // If we got a quota exceeded response, don't throw an error - just return it
-      if (response.metadata?.quotaExceeded) {
-        console.warn(`${this.provider} quota exceeded, returning quota message`);
+    const originalProvider = this.provider;
+    const providers = ["google", "openai", "groq", "anthropic", "huggingface"];
+    
+    // Try the current provider first, then fallback to others
+    const providersToTry = [originalProvider, ...providers.filter(p => p !== originalProvider)];
+    
+    for (const providerName of providersToTry) {
+      try {
+        this.setProvider(providerName);
+        let response: AIResponse;
+        
+        switch (this.provider) {
+          case "openai":
+            response = await this.callOpenAI(userMessage, conversationHistory);
+            break;
+          case "anthropic":
+            response = await this.callAnthropic(userMessage, conversationHistory);
+            break;
+          case "huggingface":
+            response = await this.callHuggingFace(userMessage, conversationHistory);
+            break;
+          case "google":
+            response = await this.callGoogleAI(userMessage, conversationHistory);
+            break;
+          case "groq":
+            response = await this.callGroq(userMessage, conversationHistory);
+            break;
+          default:
+            response = await this.callLocalAI(userMessage, conversationHistory);
+            break;
+        }
+        
+        // If we got a successful response or a graceful fallback, return it
+        if (response && !response.metadata?.error) {
+          if (providerName !== originalProvider) {
+            console.log(`Successfully switched from ${originalProvider} to ${providerName}`);
+          }
+          return response;
+        }
+        
+        // If we got a quota exceeded response, try next provider
+        if (response.metadata?.quotaExceeded || response.metadata?.serviceUnavailable) {
+          console.warn(`${providerName} has issues, trying next provider...`);
+          continue;
+        }
+        
         return response;
+        
+      } catch (error) {
+        console.warn(`Provider ${providerName} failed:`, error);
+        
+        // If this is the last provider, throw the error
+        if (providerName === providersToTry[providersToTry.length - 1]) {
+          throw error;
+        }
+        
+        // Otherwise, continue to next provider
+        continue;
       }
-      
-      return response;
-      
-    } catch (error) {
-      console.error(`Error with ${this.provider} provider:`, error);
-      
-      // For quota errors that weren't handled gracefully, provide a better message
-      if (error instanceof Error && (
-        error.message.includes('quota') || 
-        error.message.includes('rate limit') ||
-        error.message.includes('429') ||
-        error.message.includes('RESOURCE_EXHAUSTED')
-      )) {
-        console.warn(`${this.provider} quota/rate limit error, falling back to local AI`);
-        const fallbackResponse = await this.callLocalAI(userMessage, conversationHistory);
-        return {
-          ...fallbackResponse,
-          message: `⚠️ AI service quota reached. Using local processing: ${fallbackResponse.message}`,
-        };
-      }
-      
-      // Fallback to local AI for other errors
-      return await this.callLocalAI(userMessage, conversationHistory);
     }
+    
+    // If all providers failed, return a fallback response
+    return {
+      message: "I'm experiencing technical difficulties with all AI services right now. Here's some general career advice: Focus on networking, keep learning new skills, and practice your interview techniques. Please try again in a few minutes.",
+      provider: "fallback",
+      metadata: { allProvidersFailed: true }
+    };
   }
 
   private async callOpenAI(
@@ -295,6 +309,16 @@ export class AIProviderManager {
           };
         }
         
+        // Handle service unavailable error (503)
+        if (errorData.error?.code === 503 || errorData.error?.status === "UNAVAILABLE") {
+          console.warn("Google AI service temporarily unavailable, returning fallback message");
+          return {
+            message: "I apologize, but the AI service is temporarily unavailable. Here's some general career advice: Focus on building your skills, networking in your field, and keeping your resume updated. Try asking me again in a few minutes when the service is back online.",
+            provider: "google",
+            metadata: { serviceUnavailable: true }
+          };
+        }
+        
         // Handle other specific errors
         if (errorData.error?.code === 403) {
           console.error("Google AI API access denied - check API key");
@@ -302,12 +326,23 @@ export class AIProviderManager {
         }
         
         console.error("Google AI API error:", errorData);
-        throw new Error(`Google AI API error: ${errorData.error?.message || response.statusText}`);
+        
+        // Return a helpful fallback message instead of throwing
+        return {
+          message: "I'm experiencing some technical difficulties right now. While I work on resolving this, here's some general career advice: Consider updating your LinkedIn profile, practicing interview skills, and researching companies in your field of interest. Please try your question again in a few moments.",
+          provider: "google",
+          metadata: { error: true, errorMessage: errorData.error?.message || response.statusText }
+        };
         
       } catch (parseError) {
-        // If we can't parse the error, log the raw body and throw generic error
+        // If we can't parse the error, return fallback instead of throwing
         console.error("Google AI API error (unparseable):", errorBody);
-        throw new Error(`Google AI API error: ${response.statusText}`);
+        
+        return {
+          message: "I'm experiencing some technical difficulties right now. While I work on resolving this, I'd recommend focusing on building your professional network and keeping your skills up to date. Please try your question again in a few moments.",
+          provider: "google",
+          metadata: { error: true, errorMessage: response.statusText }
+        };
       }
     }
 

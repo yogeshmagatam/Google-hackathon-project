@@ -1,19 +1,14 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 
 /**
  * Helper function to get authenticated session in Next.js 15 App Router
- * Handles the new async cookies requirement and NextAuth v4 compatibility
+ * Simplified to avoid dynamic API issues with NextAuth v4
  */
 export async function getAuthenticatedSession(request?: NextRequest) {
   try {
-    // In Next.js 15, we need to await cookies before using getServerSession
-    // This ensures compatibility with the async API requirements
-    const cookieStore = await cookies()
-    
-    // Get session with proper error handling for NextAuth v4
+    // Direct call to getServerSession - NextAuth should handle context internally
     const session = await getServerSession(authOptions)
     
     return session
