@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, CheckCircle, Circle, Target, TrendingUp, Lightbulb } from 'lucide-react';
+import { AnimatedButton, AnimatedCard, AnimatedContainer, AnimatedItem } from '@/components/animations';
 
 interface SkillAssessmentProps {
   onComplete: (results: AssessmentResults) => void;
@@ -16,6 +18,15 @@ interface AssessmentResults {
 }
 
 const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
+  // Experience Level options for assessment step
+  const experienceOptions = [
+    'Entry Level',
+    'Mid Level',
+    'Senior Level',
+    'Manager',
+    'Director',
+    'Executive'
+  ];
   const [currentStep, setCurrentStep] = useState(0);
   const [results, setResults] = useState<Partial<AssessmentResults>>({
     technicalSkills: {},
@@ -134,11 +145,11 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
 
   const renderStep = () => {
     switch (currentStep) {
-      case 0:
+      case 0: // Technical Skills
         return (
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-black mb-4">Rate Your Technical Skills</h3>
-            <p className="text-black mb-6">Rate yourself from 1 (beginner) to 5 (expert) for each skill:</p>
+            <h3 className="text-xl font-semibold text-white mb-4">Rate Your Technical Skills</h3>
+            <p className="text-white mb-6">Rate yourself from 1 (beginner) to 5 (expert) for each skill:</p>
             {technicalSkills.map(skill => (
               <div key={skill} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <span className="font-medium text-black">{skill}</span>
@@ -149,8 +160,8 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
                       onClick={() => handleSkillRating(skill, rating, 'technical')}
                       className={`w-8 h-8 rounded-full border-2 ${
                         (results.technicalSkills?.[skill] || 0) >= rating
-                          ? 'bg-blue-600 border-blue-600 text-black'
-                          : 'border-gray-300 hover:border-blue-400'
+                          ? 'bg-blue-600 border-blue-600 text-gray-300'
+                          : 'border-gray-300 hover:border-blue-400 text-gray-300'
                       }`}
                     >
                       {rating}
@@ -161,12 +172,11 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
             ))}
           </div>
         );
-
-      case 1:
+      case 1: // Soft Skills
         return (
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-black mb-4">Rate Your Soft Skills</h3>
-            <p className="text-black mb-6">Rate yourself from 1 (beginner) to 5 (expert) for each skill:</p>
+            <h3 className="text-xl font-semibold text-white mb-4">Rate Your Soft Skills</h3>
+            <p className="text-white mb-6">Rate yourself from 1 (beginner) to 5 (expert) for each skill:</p>
             {softSkills.map(skill => (
               <div key={skill} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <span className="font-medium text-black">{skill}</span>
@@ -177,8 +187,8 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
                       onClick={() => handleSkillRating(skill, rating, 'soft')}
                       className={`w-8 h-8 rounded-full border-2 ${
                         (results.softSkills?.[skill] || 0) >= rating
-                          ? 'bg-green-600 border-green-600 text-black'
-                          : 'border-gray-300 hover:border-green-400'
+                          ? 'bg-green-600 border-green-600 text-gray-300'
+                          : 'border-gray-300 hover:border-green-400 text-gray-300'
                       }`}
                     >
                       {rating}
@@ -189,39 +199,32 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
             ))}
           </div>
         );
-
-      case 2:
+      case 2: // Experience Level
         return (
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-black mb-4">Experience Level</h3>
-            <p className="text-black mb-6">What best describes your professional experience?</p>
-            {[
-              'Entry level (0-2 years)',
-              'Mid-level (3-5 years)',
-              'Senior level (6-10 years)',
-              'Executive level (10+ years)',
-              'Career changer'
-            ].map(option => (
-              <button
-                key={option}
-                onClick={() => handleExperienceSelect(option)}
-                className={`w-full p-4 text-left text-black rounded-lg border-2 transition-colors ${
-                  results.experience === option
-                    ? 'border-purple-500 bg-purple-50'
-                    : 'border-gray-200 hover:border-purple-300'
-                }`}
-              >
-                {option}
-              </button>
-            ))}
+            <h3 className="text-xl font-semibold text-white mb-4">What best describes your professional experience?</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {experienceOptions.map(option => (
+                <button
+                  key={option}
+                  onClick={() => handleExperienceSelect(option)}
+                  className={`w-full p-4 text-left rounded-lg border-2 transition-colors ${
+                    results.experience === option
+                      ? 'border-purple-500 bg-purple-50 text-black'
+                      : 'border-gray-200 hover:border-purple-300 text-black'
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
           </div>
         );
-
-      case 3:
+      case 3: // Career Goals
         return (
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-black mb-4">Career Goals</h3>
-            <p className="text-black mb-6">Select your primary career objectives (choose at least 1):</p>
+            <h3 className="text-xl font-semibold text-white mb-4">Career Goals</h3>
+            <p className="text-white mb-6">Select your primary career objectives (choose at least 1):</p>
             <div className="grid grid-cols-2 gap-3">
               {careerGoalOptions.map(goal => (
                 <button
@@ -229,15 +232,15 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
                   onClick={() => handleMultiSelect(goal, 'careerGoals')}
                   className={`p-3 text-left rounded-lg border-2 transition-colors ${
                     (results.careerGoals || []).includes(goal)
-                      ? 'border-orange-500 bg-orange-50'
-                      : 'border-gray-200 hover:border-orange-300'
+                      ? 'border-orange-500 bg-orange-50 text-white'
+                      : 'border-gray-200 hover:border-orange-300 text-white'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     {(results.careerGoals || []).includes(goal) ? (
                       <CheckCircle className="w-5 h-5 text-orange-500" />
                     ) : (
-                      <Circle className="w-5 h-5 text-black" />
+                      <Circle className="w-5 h-5 text-white" />
                     )}
                     <span className="text-sm font-medium text-black">{goal}</span>
                   </div>
@@ -246,12 +249,11 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
             </div>
           </div>
         );
-
-      case 4:
+      case 4: // Interests
         return (
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-black mb-4">Areas of Interest</h3>
-            <p className="text-black mb-6">Select fields that interest you (choose at least 2):</p>
+            <h3 className="text-xl font-semibold text-white mb-4">Areas of Interest</h3>
+            <p className="text-white mb-6">Select fields that interest you (choose at least 2):</p>
             <div className="grid grid-cols-3 gap-3">
               {interestOptions.map(interest => (
                 <button
@@ -259,15 +261,15 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
                   onClick={() => handleMultiSelect(interest, 'interests')}
                   className={`p-3 text-center rounded-lg border-2 transition-colors ${
                     (results.interests || []).includes(interest)
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-indigo-300'
+                      ? 'border-indigo-500 bg-indigo-50 text-white'
+                      : 'border-gray-200 hover:border-indigo-300 text-white'
                   }`}
                 >
                   <div className="flex flex-col items-center gap-1">
                     {(results.interests || []).includes(interest) ? (
                       <CheckCircle className="w-5 h-5 text-indigo-500" />
                     ) : (
-                      <Circle className="w-5 h-5 text-black" />
+                      <Circle className="w-5 h-5 text-white" />
                     )}
                     <span className="text-sm font-medium text-black">{interest}</span>
                   </div>
@@ -276,65 +278,108 @@ const SkillAssessment = ({ onComplete }: SkillAssessmentProps) => {
             </div>
           </div>
         );
-
       default:
         return null;
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl mx-auto">
+    <AnimatedCard animation="hover" className="bg-white shadow-xl p-6 max-w-4xl mx-auto">
       {/* Progress Bar */}
-      <div className="mb-8">
+      <motion.div 
+        className="mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-black">Assessment Progress</span>
-          <span className="text-sm text-black">{currentStep + 1} of {steps.length}</span>
+          <span className="text-sm font-medium text-white">Assessment Progress</span>
+          <motion.span 
+            className="text-sm text-white"
+            key={currentStep}
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            {currentStep + 1} of {steps.length}
+          </motion.span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+          <motion.div
+            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           />
         </div>
         <div className="flex justify-between mt-2">
           {steps.map((step, index) => (
-            <span
+            <motion.span
               key={step}
-              className={`text-xs ${
-                index <= currentStep ? 'text-blue-600 font-medium' : 'text-black'
-              }`}
+                className={`text-xs ${
+                  index <= currentStep ? 'text-blue-600 font-medium' : 'text-white'
+                }`}
+              initial={{ opacity: 0.5 }}
+              animate={{ 
+                opacity: index <= currentStep ? 1 : 0.5,
+                scale: index === currentStep ? 1.1 : 1 
+              }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
             >
-              {step}
-            </span>
+                {step}
+            </motion.span>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Step Content */}
       <div className="min-h-[400px]">
-        {renderStep()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            {renderStep()}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between mt-8">
-        <button
+      <motion.div 
+        className="flex justify-between mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <AnimatedButton
           onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
           disabled={currentStep === 0}
-          className="px-4 py-2 text-black disabled:opacity-50 disabled:cursor-not-allowed"
+          variant="ghost"
+          animation="slide"
         >
           Previous
-        </button>
-        <button
+        </AnimatedButton>
+        <AnimatedButton
           onClick={handleNext}
           disabled={!canProceed()}
-          className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          variant="primary"
+          animation="glow"
+          className="flex items-center gap-2"
         >
           {currentStep === steps.length - 1 ? 'Complete Assessment' : 'Next'}
-          <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
+          <motion.div
+            animate={{ x: [0, 3, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </motion.div>
+        </AnimatedButton>
+      </motion.div>
+    </AnimatedCard>
   );
-};
+}
 
 export default SkillAssessment;

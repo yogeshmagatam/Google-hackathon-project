@@ -7,15 +7,25 @@ const handler = NextAuth(authOptions)
 
 // Wrap handlers to properly handle Next.js 15 dynamic APIs
 async function GET(request: NextRequest, context: { params: Promise<{ nextauth: string[] }> }) {
-  // Await params to satisfy Next.js 15 requirements
-  const params = await context.params
-  return handler(request, { params: { nextauth: params.nextauth } })
+  try {
+    // Await params to satisfy Next.js 15 requirements
+    const params = await context.params
+    return handler(request, { params: { nextauth: params.nextauth } })
+  } catch (error) {
+    console.error('NextAuth GET error:', error)
+    return new Response('Authentication error', { status: 500 })
+  }
 }
 
 async function POST(request: NextRequest, context: { params: Promise<{ nextauth: string[] }> }) {
-  // Await params to satisfy Next.js 15 requirements
-  const params = await context.params
-  return handler(request, { params: { nextauth: params.nextauth } })
+  try {
+    // Await params to satisfy Next.js 15 requirements
+    const params = await context.params
+    return handler(request, { params: { nextauth: params.nextauth } })
+  } catch (error) {
+    console.error('NextAuth POST error:', error)
+    return new Response('Authentication error', { status: 500 })
+  }
 }
 
 // Export named handlers for Next.js App Router

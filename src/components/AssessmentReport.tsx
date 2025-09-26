@@ -176,7 +176,7 @@ const AssessmentReport = ({ results, onStartNewAssessment }: AssessmentReportPro
             />
           ))}
         </div>
-        <span className="text-sm text-black ml-2">{rating}/5</span>
+  <span className="text-sm text-black ml-2">{rating}/5</span>
       </div>
     </div>
   );
@@ -188,7 +188,7 @@ const AssessmentReport = ({ results, onStartNewAssessment }: AssessmentReportPro
     >
       <div className="flex items-center gap-3">
         <Icon className="w-6 h-6 text-blue-600" />
-        <h3 className="text-lg font-semibold text-black">{title}</h3>
+  <h3 className="text-lg font-semibold text-black">{title}</h3>
       </div>
       {expandedSections[section] ? (
         <ChevronUp className="w-5 h-5 text-blue-600" />
@@ -199,7 +199,7 @@ const AssessmentReport = ({ results, onStartNewAssessment }: AssessmentReportPro
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-xl p-6 max-w-6xl mx-auto">
+  <div className="bg-white rounded-lg shadow-xl p-6 max-w-6xl mx-auto text-black">
       {/* Header */}
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-black mb-2">Your Career Assessment Report</h2>
@@ -209,20 +209,23 @@ const AssessmentReport = ({ results, onStartNewAssessment }: AssessmentReportPro
       {/* Overview Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="text-center p-4 bg-blue-50 rounded-lg">
-          <div className="text-2xl font-bold text-blue-600">{Object.keys(results.technicalSkills || {}).length}</div>
-          <div className="text-sm text-black">Technical Skills Rated</div>
+          <div className="text-2xl font-bold text-blue-600">{results.experience ? 1 : 0}</div>
+    <div className="text-sm text-white">Experience Level</div>
+    <div className="text-xs text-white mt-1">What best describes your professional experience?</div>
         </div>
         <div className="text-center p-4 bg-green-50 rounded-lg">
           <div className="text-2xl font-bold text-green-600">{Object.keys(results.softSkills || {}).length}</div>
-          <div className="text-sm text-black">Soft Skills Rated</div>
+    <div className="text-sm text-black">Soft Skills Rated</div>
         </div>
         <div className="text-center p-4 bg-purple-50 rounded-lg">
           <div className="text-2xl font-bold text-purple-600">{(results.careerGoals || []).length}</div>
-          <div className="text-sm text-black">Career Goals</div>
+    <div className="text-sm text-white">Career Goals</div>
+    <div className="text-xs text-white mt-1">Select your primary career objectives (choose at least 1):</div>
         </div>
         <div className="text-center p-4 bg-orange-50 rounded-lg">
           <div className="text-2xl font-bold text-orange-600">{(results.interests || []).length}</div>
-          <div className="text-sm text-black">Interest Areas</div>
+    <div className="text-sm text-white">Interests</div>
+    <div className="text-xs text-white mt-1">Select fields that interest you (choose at least 2):</div>
         </div>
       </div>
 

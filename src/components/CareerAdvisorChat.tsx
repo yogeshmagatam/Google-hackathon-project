@@ -364,7 +364,7 @@ const CareerAdvisorChat = () => {
             </div>
             {message.sender === 'user' && (
               <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center flex-shrink-0">
-                <User className="w-5 h-5 text-black" />
+                <User className="w-5 h-5 text-white" />
               </div>
             )}
           </div>

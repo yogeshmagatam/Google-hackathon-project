@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from '@/components/gemini/Sidebar';
 import { ChatArea } from '@/components/gemini/ChatArea';
 import { ConversationProvider } from '@/contexts/ConversationContext';
@@ -14,6 +15,7 @@ import SkillAssessment from '@/components/SkillAssessment';
 import AssessmentReport from '@/components/AssessmentReport';
 import ResumeUpload from '@/components/ResumeUpload';
 import JobRecommendations from '@/components/JobRecommendations';
+import { AnimatedWrapper, PageTransition, AnimatedLoading, AnimatedButton } from '@/components/animations';
 
 export default function GeminiLayout() {
   const { data: session, status } = useSession();
@@ -46,29 +48,49 @@ export default function GeminiLayout() {
 
   if (status === 'loading') {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-      </div>
+  <AnimatedWrapper animation="fadeIn" className="flex items-center justify-center h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+        <AnimatedLoading type="wave" size="lg" color="blue-500" text="Loading your career advisor..." />
+      </AnimatedWrapper>
     );
   }
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+  <AnimatedWrapper animation="fadeIn" className="min-h-screen flex items-center justify-center p-4 bg-[var(--color-bg)] text-[var(--color-text)]">
+        <motion.div 
+          className="max-w-md w-full rounded-2xl shadow-xl p-8" style={{ background: 'var(--color-surface)', color: 'var(--color-text)' }}
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <motion.div 
+              className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               <span className="text-white font-bold text-2xl">CA</span>
-            </div>
+            </motion.div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Career Advisor AI</h1>
             <p className="text-gray-600">Your personal career guidance assistant</p>
-          </div>
+          </motion.div>
 
-          <div className="space-y-4">
-            <button
+          <motion.div 
+            className="space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <AnimatedButton
               onClick={() => signIn('google')}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              style={{ color: '#000000' }}
+              variant="default"
+              animation="glow"
+              className="w-full text-black border-2 border-gray-200"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -77,65 +99,108 @@ export default function GeminiLayout() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               Continue with Google
-            </button>
+            </AnimatedButton>
 
-            <button
+            <AnimatedButton
               onClick={() => signIn('github')}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+              variant="default"
+              animation="bounce"
+              className="w-full bg-gray-900 text-white hover:bg-gray-800 border-gray-900"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
               Continue with GitHub
-            </button>
-          </div>
+            </AnimatedButton>
+          </motion.div>
 
-          <div className="mt-8 text-center text-sm text-gray-500">
+          <motion.div 
+            className="mt-8 text-center text-sm text-gray-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
             <p>By signing in, you agree to our Terms of Service and Privacy Policy</p>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </AnimatedWrapper>
     );
   }
 
   return (
     <ConversationProvider>
       <AIProvider>
-        <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-          {isMobile && sidebarOpen && (
-            <div 
-              className="fixed inset-0 bg-black bg-opacity-50 z-40"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
+  <AnimatedWrapper animation="fadeIn" className="h-screen flex flex-col bg-[var(--color-bg)] text-[var(--color-text)]">
+          <AnimatePresence>
+            {isMobile && sidebarOpen && (
+              <motion.div 
+                className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                onClick={() => setSidebarOpen(false)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            )}
+          </AnimatePresence>
 
           {/* Header Bar */}
-          <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+          <motion.div 
+            className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="flex items-center gap-3">
               {activeTab === 'chat' && (
-                <button
+                <motion.button
                   onClick={toggleSidebar}
                   className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                   aria-label="Toggle sidebar"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                </button>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={sidebarOpen ? 'close' : 'menu'}
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {sidebarOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5" />}
+                    </motion.div>
+                  </AnimatePresence>
+                </motion.button>
               )}
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <motion.h1 
+                className="text-xl font-semibold text-gray-900 dark:text-white"
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+              >
                 Career Advisor AI
-              </h1>
+              </motion.h1>
             </div>
 
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
-                <button className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <motion.button 
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <motion.div 
+                    className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                    whileHover={{ rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
                     <User className="w-4 h-4 text-white" />
-                  </div>
+                  </motion.div>
                   <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
                     {session?.user?.name || session?.user?.email}
                   </span>
-                </button>
+                </motion.button>
               </DropdownMenu.Trigger>
 
               <DropdownMenu.Portal>
@@ -158,100 +223,118 @@ export default function GeminiLayout() {
                 </DropdownMenu.Content>
               </DropdownMenu.Portal>
             </DropdownMenu.Root>
-          </div>
+          </motion.div>
 
           {/* Tab Navigation */}
           <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
-            <Tabs.List className="flex-shrink-0 flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4">
-              <Tabs.Trigger 
-                value="chat" 
-                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-              >
-                <Home className="w-4 h-4" />
-                Chat
-              </Tabs.Trigger>
-              <Tabs.Trigger 
-                value="assessment" 
-                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-              >
-                <BarChart3 className="w-4 h-4" />
-                Assessment
-              </Tabs.Trigger>
-              <Tabs.Trigger 
-                value="jobs" 
-                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-              >
-                <Briefcase className="w-4 h-4" />
-                Jobs
-              </Tabs.Trigger>
-              <Tabs.Trigger 
-                value="resume" 
-                className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-              >
-                <FileText className="w-4 h-4" />
-                Resume
-              </Tabs.Trigger>
-              {assessmentResults && (
-                <Tabs.Trigger 
-                  value="report" 
-                  className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400"
-                >
-                  <BarChart3 className="w-4 h-4" />
-                  Report
-                </Tabs.Trigger>
-              )}
-            </Tabs.List>
+            <motion.div
+              className="flex-shrink-0 flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <Tabs.List className="flex">
+                {[
+                  { value: "chat", icon: Home, label: "Chat" },
+                  { value: "assessment", icon: BarChart3, label: "Assessment" },
+                  { value: "jobs", icon: Briefcase, label: "Jobs" },
+                  { value: "resume", icon: FileText, label: "Resume" },
+                  ...(assessmentResults ? [{ value: "report", icon: BarChart3, label: "Report" }] : [])
+                ].map((tab, index) => (
+                  <Tabs.Trigger 
+                    key={tab.value}
+                    value={tab.value}
+                    asChild
+                  >
+                    <motion.button
+                      className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 relative"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <motion.div
+                        animate={activeTab === tab.value ? { 
+                          rotate: [0, 5, -5, 0],
+                          scale: [1, 1.1, 1]
+                        } : {}}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <tab.icon className="w-4 h-4" />
+                      </motion.div>
+                      {tab.label}
+                      {activeTab === tab.value && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full"
+                          layoutId="activeTab"
+                          initial={false}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </motion.button>
+                  </Tabs.Trigger>
+                ))}
+              </Tabs.List>
+            </motion.div>
 
             {/* Content Area */}
             <div className="flex-1 flex min-h-0">
               {/* Sidebar for Chat Tab */}
               {activeTab === 'chat' && (
-                <div className={cn(
-                  "flex-shrink-0 transition-all duration-300 ease-in-out",
-                  sidebarOpen ? "w-80" : "w-0",
-                  isMobile ? "fixed top-0 left-0 h-full z-50" : "relative"
-                )}>
+                <motion.div 
+                  className={cn(
+                    "flex-shrink-0 transition-all duration-300 ease-in-out",
+                    sidebarOpen ? "w-80" : "w-0",
+                    isMobile ? "fixed top-0 left-0 h-full z-50" : "relative"
+                  )}
+                  initial={{ x: -320 }}
+                  animate={{ x: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
                   <Sidebar 
                     isOpen={sidebarOpen} 
                     onClose={() => setSidebarOpen(false)}
                     isMobile={isMobile}
                   />
-                </div>
+                </motion.div>
               )}
 
               {/* Main Content */}
               <div className="flex-1 min-w-0 h-full">
-                <Tabs.Content value="chat" className="h-full">
-                  <ChatArea />
-                </Tabs.Content>
-
-                <Tabs.Content value="assessment" className="h-full overflow-auto p-6">
-                  <SkillAssessment onComplete={handleAssessmentComplete} />
-                </Tabs.Content>
-
-                <Tabs.Content value="jobs" className="h-full overflow-auto p-6">
-                  <JobRecommendations />
-                </Tabs.Content>
-
-                <Tabs.Content value="resume" className="h-full overflow-auto p-6">
-                  <ResumeUpload />
-                </Tabs.Content>
-
-                {assessmentResults && (
-                  <Tabs.Content value="report" className="h-full overflow-auto p-6">
-                    <AssessmentReport 
-                      results={assessmentResults} 
-                      onStartNewAssessment={() => {
-                        setAssessmentResults(null);
-                        setActiveTab('assessment');
-                      }}
-                    />
+                <PageTransition page={activeTab}>
+                  <Tabs.Content value="chat" className="h-full">
+                    <ChatArea />
                   </Tabs.Content>
-                )}
+
+                  <Tabs.Content value="assessment" className="h-full overflow-auto p-6">
+                    <SkillAssessment onComplete={handleAssessmentComplete} />
+                  </Tabs.Content>
+
+                  <Tabs.Content value="jobs" className="h-full overflow-auto p-6">
+                    <JobRecommendations />
+                  </Tabs.Content>
+
+                  <Tabs.Content value="resume" className="h-full overflow-auto p-6">
+                    <ResumeUpload />
+                  </Tabs.Content>
+
+                  {assessmentResults && (
+                    <Tabs.Content value="report" className="h-full overflow-auto p-6">
+                      <AssessmentReport 
+                        results={assessmentResults} 
+                        onStartNewAssessment={() => {
+                          setAssessmentResults(null);
+                          setActiveTab('assessment');
+                        }}
+                      />
+                    </Tabs.Content>
+                  )}
+                </PageTransition>
               </div>
             </div>
           </Tabs.Root>
-        </div>
+        </AnimatedWrapper>
       </AIProvider>
     </ConversationProvider>
   );

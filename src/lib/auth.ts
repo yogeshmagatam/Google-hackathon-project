@@ -15,7 +15,7 @@ const isGitHubConfigured = process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CL
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-development-only',
   debug: process.env.NODE_ENV === 'development',
   providers: [
     // Only include OAuth providers if properly configured
