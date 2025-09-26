@@ -84,8 +84,8 @@ function SignInContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <div className="w-full max-w-md rounded-lg shadow-lg p-6" style={{ background: 'var(--color-surface)', color: 'var(--color-text)' }}>
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
           <p className="text-gray-600">Sign in to continue to AI Career Advisor</p>
@@ -178,24 +178,26 @@ function SignInContent() {
                 {providers?.github && (
                   <button
                     type="button"
-                    className="w-full border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+                    className="w-full relative border border-black bg-black text-white py-2 px-4 rounded-md hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors overflow-hidden"
                     onClick={() => handleOAuthSignIn('github')}
                     disabled={isLoading}
                   >
-                    <Github className="w-4 h-4 mr-2" />
-                    Continue with GitHub
-                  </button>
-                )}
-                
-                {providers.github && (
-                  <button
-                    type="button"
-                    className="w-full border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
-                    onClick={() => handleOAuthSignIn('github')}
-                    disabled={isLoading}
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    Continue with GitHub
+                    {/* Animated blue border lines */}
+                    <span
+                      className={`absolute inset-0 rounded-md pointer-events-none border-2 border-transparent ${isLoading ? 'border-blue-500 animate-pulse' : ''}`}
+                      style={{ zIndex: 1 }}
+                    ></span>
+                    <span className="flex items-center" style={{ zIndex: 2, position: 'relative' }}>
+                      {isLoading ? (
+                        <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                      ) : (
+                        <Github className="w-4 h-4 mr-2" />
+                      )}
+                      {isLoading ? 'Signing in...' : 'Continue with GitHub'}
+                    </span>
                   </button>
                 )}
               </div>

@@ -121,7 +121,7 @@ export default function ProgressDashboard() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Progress Dashboard</h2>
+  <h2 className="text-2xl font-bold text-white">Progress Dashboard</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-lg shadow border">
@@ -129,9 +129,10 @@ export default function ProgressDashboard() {
             <div className="p-3 bg-blue-100 rounded-lg">
               <Calendar className="w-6 h-6 text-blue-600" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Assessments Taken</p>
-              <p className="text-2xl font-semibold text-gray-900">{totalAssessments}</p>
+            <div className="ml-4 force-white-text">
+              <p className="text-sm font-medium">Experience Level</p>
+              <p className="text-xs mt-1">What best describes your professional experience?</p>
+              <p className="text-2xl font-semibold">{totalAssessments}</p>
             </div>
           </div>
         </div>
@@ -141,9 +142,10 @@ export default function ProgressDashboard() {
             <div className="p-3 bg-purple-100 rounded-lg">
               <Award className="w-6 h-6 text-purple-600" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Average Score</p>
-              <p className="text-2xl font-semibold text-gray-900">{averageScore}%</p>
+            <div className="ml-4" style={{color:'white'}}>
+              <p className="text-sm font-medium">Career Goals</p>
+              <p className="text-xs mt-1">Select your primary career objectives (choose at least 1):</p>
+              <p className="text-2xl font-semibold">{averageScore}%</p>
             </div>
           </div>
         </div>
@@ -153,9 +155,10 @@ export default function ProgressDashboard() {
             <div className="p-3 bg-green-100 rounded-lg">
               <Briefcase className="w-6 h-6 text-green-600" />
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Jobs Bookmarked</p>
-              <p className="text-2xl font-semibold text-gray-900">{progressData.jobBookmarks.length}</p>
+            <div className="ml-4" style={{color:'white'}}>
+              <p className="text-sm font-medium">Interests</p>
+              <p className="text-xs mt-1">Select fields that interest you (choose at least 2):</p>
+              <p className="text-2xl font-semibold">{progressData.jobBookmarks.length}</p>
             </div>
           </div>
         </div>

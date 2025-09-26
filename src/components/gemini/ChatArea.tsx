@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useConversations } from '@/contexts/ConversationContext';
 import { useAI } from '@/contexts/AIContext';
 import { Message } from '@/types';
@@ -103,21 +104,54 @@ export function ChatArea() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-gray-900">
+    <motion.div 
+      className="h-full flex flex-col bg-white dark:bg-gray-900"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* Messages Area - Scrollable */}
       <div className="flex-1 overflow-y-auto px-4 py-6 min-h-0">
         <div className="max-w-4xl mx-auto space-y-6">
-          {currentConversation.messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
+          {currentConversation.messages.map((message, index) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.3, 
+                delay: index * 0.05,
+                ease: "easeOut" 
+              }}
+            >
+              <ChatMessage message={message} />
+            </motion.div>
           ))}
           
           {isTyping && (
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <motion.div 
+              className="flex items-start gap-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
                 <span className="text-white font-bold text-sm">AI</span>
-              </div>
+              </motion.div>
               <LoadingIndicator />
-            </div>
+            </motion.div>
           )}
           
           <div ref={messagesEndRef} />
@@ -125,14 +159,19 @@ export function ChatArea() {
       </div>
 
       {/* Input Area - Fixed at bottom */}
-      <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <motion.div 
+        className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
         <div className="max-w-4xl mx-auto p-4">
           <ChatInput
             onSendMessage={handleSendMessage}
             disabled={isLoading || isTyping}
           />
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
