@@ -8,13 +8,14 @@ import { ChatArea } from '@/components/gemini/ChatArea';
 import { ConversationProvider } from '@/contexts/ConversationContext';
 import { AIProvider } from '@/contexts/AIContext';
 import { cn } from '@/lib/utils';
-import { Menu, X, User, LogOut, Settings, BarChart3, Briefcase, FileText, Home } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, BarChart3, Briefcase, FileText, Home, GraduationCap } from 'lucide-react';
 import * as Tabs from '@radix-ui/react-tabs';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import SkillAssessment from '@/components/SkillAssessment';
 import AssessmentReport from '@/components/AssessmentReport';
 import ResumeUpload from '@/components/ResumeUpload';
 import JobRecommendations from '@/components/JobRecommendations';
+import StudentGuidance from '@/components/StudentGuidance';
 import { AnimatedWrapper, PageTransition, AnimatedLoading, AnimatedButton } from '@/components/animations';
 
 export default function GeminiLayout() {
@@ -237,6 +238,7 @@ export default function GeminiLayout() {
                 {[
                   { value: "chat", icon: Home, label: "Chat" },
                   { value: "assessment", icon: BarChart3, label: "Assessment" },
+                  { value: "guidance", icon: GraduationCap, label: "Student Guidance" },
                   { value: "jobs", icon: Briefcase, label: "Jobs" },
                   { value: "resume", icon: FileText, label: "Resume" },
                   ...(assessmentResults ? [{ value: "report", icon: BarChart3, label: "Report" }] : [])
@@ -309,6 +311,10 @@ export default function GeminiLayout() {
 
                   <Tabs.Content value="assessment" className="h-full overflow-auto p-6">
                     <SkillAssessment onComplete={handleAssessmentComplete} />
+                  </Tabs.Content>
+
+                  <Tabs.Content value="guidance" className="h-full overflow-auto p-6">
+                    <StudentGuidance />
                   </Tabs.Content>
 
                   <Tabs.Content value="jobs" className="h-full overflow-auto p-6">

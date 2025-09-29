@@ -176,104 +176,200 @@ async function fetchJobRecommendations(
   careerLevel: string, 
   interests: string[]
 ): Promise<JobRecommendation[]> {
-  // In a real application, you'd integrate with job APIs like:
-  // - Indeed API
-  // - LinkedIn Jobs API
-  // - GitHub Jobs
-  // - RemoteOK API
-  // - Reed API (UK)
+  // In a real application, you'd integrate with Indian job APIs like:
+  // - Naukri.com API
+  // - LinkedIn India API
+  // - Indeed India API
+  // - Monster India API
+  // - Freshersworld API
+  // - InternShala API
   
-  // For demo purposes, we'll return mock data based on user profile
+  // Mock data with Indian companies and job market context
   const mockJobs: JobRecommendation[] = [
+    // Indian IT Services Companies
     {
       id: '1',
-      title: 'Senior Software Engineer',
-      company: 'TechCorp Inc.',
-      location: 'San Francisco, CA',
-      salary: '$120,000 - $160,000',
-      description: 'We are looking for a senior software engineer to join our growing team. You will be responsible for developing scalable web applications using modern technologies.',
-      requirements: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Leadership'],
+      title: 'Software Engineer',
+      company: 'Tata Consultancy Services (TCS)',
+      location: 'Bangalore, Karnataka',
+      salary: '₹3,50,000 - ₹8,00,000',
+      description: 'Join TCS as a Software Engineer to work on cutting-edge projects for global clients. You will be part of digital transformation initiatives using latest technologies.',
+      requirements: ['Java', 'Spring Boot', 'React', 'SQL', 'Problem Solving'],
       fitScore: 0,
-      source: 'LinkedIn',
-      url: 'https://linkedin.com/jobs/123456'
+      source: 'Naukri.com',
+      url: 'https://naukri.com/jobs/123456'
     },
     {
       id: '2',
       title: 'Data Scientist',
-      company: 'DataFlow Analytics',
-      location: 'Remote',
-      salary: '$100,000 - $140,000',
-      description: 'Join our data science team to build machine learning models and extract insights from large datasets.',
-      requirements: ['Python', 'Machine Learning', 'Data Analysis', 'SQL', 'Statistics'],
+      company: 'Infosys',
+      location: 'Hyderabad, Telangana',
+      salary: '₹5,00,000 - ₹12,00,000',
+      description: 'Work with Infosys AI and automation team to build machine learning models and data-driven solutions for enterprise clients.',
+      requirements: ['Python', 'Machine Learning', 'SQL', 'Power BI', 'Statistics'],
       fitScore: 0,
-      source: 'Indeed',
-      url: 'https://indeed.com/jobs/789012'
+      source: 'LinkedIn India',
+      url: 'https://linkedin.com/jobs/789012'
     },
     {
       id: '3',
       title: 'Product Manager',
-      company: 'Innovation Labs',
-      location: 'New York, NY',
-      salary: '$110,000 - $150,000',
-      description: 'Lead product development from conception to launch. Work with cross-functional teams to deliver exceptional user experiences.',
-      requirements: ['Product Management', 'Leadership', 'Communication', 'Project Management', 'Strategic Thinking'],
+      company: 'Flipkart',
+      location: 'Bangalore, Karnataka',
+      salary: '₹15,00,000 - ₹25,00,000',
+      description: 'Lead product strategy for Flipkart\'s e-commerce platform. Drive product development from ideation to launch with cross-functional teams.',
+      requirements: ['Product Management', 'Analytics', 'Communication', 'Agile', 'Leadership'],
       fitScore: 0,
-      source: 'Glassdoor'
+      source: 'Glassdoor India',
+      url: 'https://glassdoor.co.in/jobs/345678'
     },
     {
       id: '4',
-      title: 'UX/UI Designer',
-      company: 'Creative Studio',
-      location: 'Los Angeles, CA',
-      salary: '$80,000 - $110,000',
-      description: 'Design beautiful and intuitive user interfaces for web and mobile applications.',
-      requirements: ['Design', 'Figma', 'User Research', 'Prototyping', 'Creativity'],
+      title: 'UI/UX Designer',
+      company: 'Zomato',
+      location: 'Gurgaon, Haryana',
+      salary: '₹6,00,000 - ₹12,00,000',
+      description: 'Design delightful user experiences for Zomato\'s food delivery platform. Work on mobile and web applications used by millions of users.',
+      requirements: ['Figma', 'User Research', 'Prototyping', 'Design Thinking', 'Mobile Design'],
       fitScore: 0,
-      source: 'Dribbble Jobs'
+      source: 'AngelList India',
+      url: 'https://angel.co/jobs/456789'
     },
     {
       id: '5',
-      title: 'Marketing Manager',
-      company: 'GrowthCo',
-      location: 'Austin, TX',
-      salary: '$70,000 - $95,000',
-      description: 'Drive marketing campaigns and strategies to increase brand awareness and customer acquisition.',
-      requirements: ['Digital Marketing', 'Communication', 'Analytics', 'Content Creation', 'Leadership'],
+      title: 'Digital Marketing Manager',
+      company: 'Paytm',
+      location: 'Noida, Uttar Pradesh',
+      salary: '₹8,00,000 - ₹15,00,000',
+      description: 'Drive digital marketing campaigns for Paytm\'s fintech products. Manage performance marketing, social media, and brand campaigns.',
+      requirements: ['Digital Marketing', 'Google Ads', 'Facebook Ads', 'Analytics', 'Content Strategy'],
       fitScore: 0,
-      source: 'MarketingJobs'
+      source: 'Indeed India',
+      url: 'https://indeed.co.in/jobs/567890'
     },
     {
       id: '6',
       title: 'DevOps Engineer',
-      company: 'CloudTech Solutions',
-      location: 'Seattle, WA',
-      salary: '$105,000 - $135,000',
-      description: 'Manage cloud infrastructure and deployment pipelines. Ensure high availability and scalability.',
-      requirements: ['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Linux', 'Infrastructure'],
+      company: 'Tech Mahindra',
+      location: 'Pune, Maharashtra',
+      salary: '₹7,00,000 - ₹14,00,000',
+      description: 'Manage cloud infrastructure and CI/CD pipelines for enterprise clients. Work with AWS, Azure, and containerization technologies.',
+      requirements: ['AWS', 'Docker', 'Kubernetes', 'Jenkins', 'Linux', 'Python'],
       fitScore: 0,
-      source: 'Stack Overflow Jobs'
+      source: 'Monster India',
+      url: 'https://monsterindia.com/jobs/678901'
     },
     {
       id: '7',
       title: 'Business Analyst',
-      company: 'FinanceFirst',
-      location: 'Chicago, IL',
-      salary: '$65,000 - $85,000',
-      description: 'Analyze business processes and requirements to drive operational improvements.',
-      requirements: ['Business Analysis', 'Excel', 'Communication', 'Problem Solving', 'Finance'],
+      company: 'HDFC Bank',
+      location: 'Mumbai, Maharashtra',
+      salary: '₹4,50,000 - ₹9,00,000',
+      description: 'Analyze business requirements for digital banking initiatives. Work on process improvements and system integrations.',
+      requirements: ['Business Analysis', 'SQL', 'Excel', 'Banking Domain', 'Communication'],
       fitScore: 0,
-      source: 'LinkedIn'
+      source: 'Naukri.com',
+      url: 'https://naukri.com/jobs/789012'
     },
     {
       id: '8',
       title: 'Frontend Developer',
-      company: 'WebBuilders',
-      location: 'Remote',
-      salary: '$75,000 - $100,000',
-      description: 'Build responsive and interactive web applications using modern frontend frameworks.',
-      requirements: ['JavaScript', 'React', 'CSS', 'HTML', 'TypeScript'],
+      company: 'Byju\'s',
+      location: 'Bangalore, Karnataka',
+      salary: '₹5,00,000 - ₹10,00,000',
+      description: 'Build interactive learning experiences for Byju\'s EdTech platform. Work on web and mobile applications for K-12 education.',
+      requirements: ['React', 'JavaScript', 'TypeScript', 'CSS', 'Mobile Development'],
       fitScore: 0,
-      source: 'AngelList'
+      source: 'Freshersworld',
+      url: 'https://freshersworld.com/jobs/890123'
+    },
+    // Government and Banking Jobs
+    {
+      id: '9',
+      title: 'Probationary Officer (PO)',
+      company: 'State Bank of India',
+      location: 'Multiple Locations',
+      salary: '₹4,50,000 - ₹8,00,000',
+      description: 'Join SBI as a Probationary Officer. Handle banking operations, customer service, and branch management responsibilities.',
+      requirements: ['Banking Knowledge', 'Communication', 'Leadership', 'Customer Service', 'Financial Analysis'],
+      fitScore: 0,
+      source: 'SBI Careers',
+      url: 'https://sbi.co.in/careers/po-recruitment'
+    },
+    {
+      id: '10',
+      title: 'Assistant Engineer',
+      company: 'Indian Railways',
+      location: 'Various States',
+      salary: '₹3,50,000 - ₹7,00,000',
+      description: 'Work as Assistant Engineer in Indian Railways. Involved in maintenance, operations, and development of railway infrastructure.',
+      requirements: ['Engineering Degree', 'Technical Knowledge', 'Problem Solving', 'Project Management'],
+      fitScore: 0,
+      source: 'RRB Official',
+      url: 'https://indianrailways.gov.in/jobs/ae-recruitment'
+    },
+    // Startup and New-age Companies
+    {
+      id: '11',
+      title: 'Growth Marketing Specialist',
+      company: 'Ola',
+      location: 'Bangalore, Karnataka',
+      salary: '₹6,00,000 - ₹12,00,000',
+      description: 'Drive user acquisition and retention for Ola\'s mobility platform. Work on data-driven marketing campaigns and growth experiments.',
+      requirements: ['Growth Marketing', 'Analytics', 'A/B Testing', 'SQL', 'Digital Marketing'],
+      fitScore: 0,
+      source: 'LinkedIn India',
+      url: 'https://linkedin.com/jobs/growth-ola'
+    },
+    {
+      id: '12',
+      title: 'Content Writer',
+      company: 'Unacademy',
+      location: 'Remote',
+      salary: '₹3,00,000 - ₹6,00,000',
+      description: 'Create engaging educational content for Unacademy\'s online learning platform. Write for various competitive exams and academic subjects.',
+      requirements: ['Content Writing', 'Research', 'Education Background', 'Communication', 'Subject Expertise'],
+      fitScore: 0,
+      source: 'InternShala',
+      url: 'https://internshala.com/jobs/content-writer-unacademy'
+    },
+    // Consulting and Finance
+    {
+      id: '13',
+      title: 'Management Trainee',
+      company: 'Deloitte India',
+      location: 'Mumbai, Maharashtra',
+      salary: '₹8,00,000 - ₹15,00,000',
+      description: 'Join Deloitte\'s management consulting practice. Work with Fortune 500 clients on strategy, operations, and technology implementations.',
+      requirements: ['MBA', 'Consulting', 'Problem Solving', 'Communication', 'Analytics'],
+      fitScore: 0,
+      source: 'Glassdoor India',
+      url: 'https://glassdoor.co.in/jobs/deloitte-mt'
+    },
+    {
+      id: '14',
+      title: 'Financial Analyst',
+      company: 'ICICI Bank',
+      location: 'Chennai, Tamil Nadu',
+      salary: '₹4,00,000 - ₹8,50,000',
+      description: 'Analyze financial data and market trends for ICICI Bank\'s corporate banking division. Support loan processing and risk assessment.',
+      requirements: ['Finance', 'Excel', 'Financial Modeling', 'Banking', 'Risk Analysis'],
+      fitScore: 0,
+      source: 'Naukri.com',
+      url: 'https://naukri.com/jobs/icici-financial-analyst'
+    },
+    // Entry-level and Internship opportunities
+    {
+      id: '15',
+      title: 'Management Trainee - Sales',
+      company: 'Asian Paints',
+      location: 'Mumbai, Maharashtra',
+      salary: '₹3,50,000 - ₹6,00,000',
+      description: 'Start your career in sales with Asian Paints. Comprehensive training program covering sales, marketing, and business development.',
+      requirements: ['MBA/B.Tech', 'Communication', 'Sales Aptitude', 'Leadership Potential', 'Market Research'],
+      fitScore: 0,
+      source: 'Company Website',
+      url: 'https://asianpaints.com/careers/mt-sales'
     }
   ]
 
