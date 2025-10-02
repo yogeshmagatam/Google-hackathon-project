@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { GraduationCap, Building, MapPin, Star, ExternalLink, Filter, BookOpen, Award, Users, TrendingUp } from 'lucide-react'
+import { GraduationCap, Building, MapPin, Star, ExternalLink, Filter, BookOpen, Award, Users, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react'
 import { AnimatedButton, AnimatedCard, StaggeredGrid } from '@/components/animations'
 import { studentCareerGuidance, indianEducationSystem } from '@/lib/indian-career-context'
 
@@ -17,6 +18,7 @@ interface College {
   courses: string[]
   entranceExam: string
   fees: string
+  website: string
 }
 
 interface Internship {
@@ -30,12 +32,15 @@ interface Internship {
   requirements: string[]
   type: 'Tech' | 'Finance' | 'Consulting' | 'Marketing' | 'Research'
   applicationDeadline: string
+  applyUrl: string
 }
 
-const StudentGuidance: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'colleges' | 'internships' | 'career-paths'>('colleges')
-  const [selectedStream, setSelectedStream] = useState<string>('all')
-  const [selectedType, setSelectedType] = useState<string>('all')
+const StudentGuidance = () => {
+  const [activeTab, setActiveTab] = useState('colleges')
+  const [selectedType, setSelectedType] = useState('all')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [expandedCard, setExpandedCard] = useState<string | null>(null)
+  const router = useRouter()
 
   // Mock college data based on Indian context
   const colleges: College[] = [
@@ -49,7 +54,8 @@ const StudentGuidance: React.FC = () => {
       topRecruiters: ['Google', 'Microsoft', 'Goldman Sachs', 'McKinsey'],
       courses: ['B.Tech CSE', 'B.Tech EE', 'B.Tech Mechanical', 'M.Tech', 'MBA'],
       entranceExam: 'JEE Advanced',
-      fees: '₹2,50,000/year'
+      fees: '₹2,50,000/year',
+      website: 'https://www.iitb.ac.in/'
     },
     {
       id: '2',
@@ -61,7 +67,8 @@ const StudentGuidance: React.FC = () => {
       topRecruiters: ['Apollo Hospitals', 'Fortis', 'Max Healthcare', 'PGIMER'],
       courses: ['MBBS', 'MD', 'MS', 'DM', 'MCh'],
       entranceExam: 'NEET',
-      fees: '₹1,50,000/year'
+      fees: '₹1,50,000/year',
+      website: 'https://www.aiims.edu/en.html'
     },
     {
       id: '3',
@@ -73,7 +80,8 @@ const StudentGuidance: React.FC = () => {
       topRecruiters: ['McKinsey', 'BCG', 'Bain', 'Goldman Sachs', 'JP Morgan'],
       courses: ['MBA', 'PGPX', 'PhD'],
       entranceExam: 'CAT',
-      fees: '₹23,00,000 (2 years)'
+      fees: '₹23,00,000 (2 years)',
+      website: 'https://www.iima.ac.in/'
     },
     {
       id: '4',
@@ -85,7 +93,8 @@ const StudentGuidance: React.FC = () => {
       topRecruiters: ['Microsoft', 'Amazon', 'Google', 'Adobe', 'Flipkart'],
       courses: ['B.E.', 'M.Sc.', 'MBA', 'PhD'],
       entranceExam: 'BITSAT',
-      fees: '₹4,50,000/year'
+      fees: '₹4,50,000/year',
+      website: 'https://www.bits-pilani.ac.in/'
     },
     {
       id: '5',
@@ -97,7 +106,8 @@ const StudentGuidance: React.FC = () => {
       topRecruiters: ['TCS', 'Infosys', 'Wipro', 'Accenture', 'Cognizant'],
       courses: ['B.Tech', 'M.Tech', 'MBA', 'PhD'],
       entranceExam: 'JEE Main',
-      fees: '₹1,50,000/year'
+      fees: '₹1,50,000/year',
+      website: 'https://www.nitt.edu/'
     }
   ]
 
@@ -113,7 +123,8 @@ const StudentGuidance: React.FC = () => {
       description: 'Work on cutting-edge e-commerce platform features. Gain hands-on experience with large-scale distributed systems.',
       requirements: ['Java/Python', 'Data Structures', 'System Design', 'Problem Solving'],
       type: 'Tech',
-      applicationDeadline: '15th November 2024'
+      applicationDeadline: '15th November 2024',
+      applyUrl: 'https://www.flipkart.com/careers'
     },
     {
       id: '2',
@@ -125,7 +136,8 @@ const StudentGuidance: React.FC = () => {
       description: 'Support deal execution, financial modeling, and client presentations in Investment Banking Division.',
       requirements: ['Finance Background', 'Excel', 'Financial Modeling', 'Communication'],
       type: 'Finance',
-      applicationDeadline: '30th October 2024'
+      applicationDeadline: '30th October 2024',
+      applyUrl: 'https://www.goldmansachs.com/careers/'
     },
     {
       id: '3',
@@ -137,7 +149,8 @@ const StudentGuidance: React.FC = () => {
       description: 'Work with Fortune 500 clients on strategy and operations projects. Mentorship from senior consultants.',
       requirements: ['MBA/B.Tech', 'Problem Solving', 'Communication', 'Analytics'],
       type: 'Consulting',
-      applicationDeadline: '20th November 2024'
+      applicationDeadline: '20th November 2024',
+      applyUrl: 'https://www.mckinsey.com/careers'
     },
     {
       id: '4',
@@ -149,7 +162,8 @@ const StudentGuidance: React.FC = () => {
       description: 'Drive go-to-market strategies for new product launches. Work closely with product and marketing teams.',
       requirements: ['Marketing', 'Analytics', 'Content Creation', 'Communication'],
       type: 'Marketing',
-      applicationDeadline: '25th October 2024'
+      applicationDeadline: '25th October 2024',
+      applyUrl: 'https://www.zomato.com/careers'
     },
     {
       id: '5',
@@ -161,7 +175,8 @@ const StudentGuidance: React.FC = () => {
       description: 'Research on AI/ML applications in healthcare. Opportunity to publish papers and attend conferences.',
       requirements: ['Python', 'Machine Learning', 'Research Aptitude', 'Mathematics'],
       type: 'Research',
-      applicationDeadline: '10th December 2024'
+      applicationDeadline: '10th December 2024',
+      applyUrl: 'https://www.iitb.ac.in/en/research-opportunities'
     }
   ]
 
@@ -360,22 +375,62 @@ const StudentGuidance: React.FC = () => {
 
                     <div className="flex flex-col gap-2 lg:ml-4">
                       <AnimatedButton
+                        onClick={() => setExpandedCard(expandedCard === college.id ? null : college.id)}
                         variant="primary"
                         animation="glow"
                         className="bg-blue-600 text-white hover:bg-blue-700"
                       >
-                        <ExternalLink className="w-4 h-4" />
-                        View Details
+                        {expandedCard === college.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        {expandedCard === college.id ? 'Hide Details' : 'View Details'}
                       </AnimatedButton>
                       <AnimatedButton
+                        onClick={() => window.open(college.website, '_blank')}
                         variant="secondary"
                         animation="bounce"
                         className="border-gray-300"
                       >
-                        <Users className="w-4 h-4" />
-                        Connect Alumni
+                        <ExternalLink className="w-4 h-4" />
+                        Apply Now
                       </AnimatedButton>
                     </div>
+
+                    {/* Expanded Details Section for Colleges */}
+                    <AnimatePresence>
+                      {expandedCard === college.id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-4 pt-4 border-t border-gray-200 col-span-full"
+                        >
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <h4 className="font-semibold text-white mb-2">Entrance Exam</h4>
+                              <p className="text-white">{college.entranceExam}</p>
+                              
+                              <h4 className="font-semibold text-white mt-4 mb-2">Course Fees</h4>
+                              <p className="text-white">{college.fees}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-white mb-2">All Courses</h4>
+                              <div className="flex flex-wrap gap-1">
+                                {college.courses.map((course, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-blue-100 text-black text-xs rounded">
+                                    {course}
+                                  </span>
+                                ))}
+                              </div>
+                              
+                              <h4 className="font-semibold text-white mt-4 mb-2">College Type</h4>
+                              <span className={`px-2 py-1 text-xs rounded ${getTypeColor(college.type)}`}>
+                                {college.type}
+                              </span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </AnimatedCard>
               ))}
@@ -432,6 +487,16 @@ const StudentGuidance: React.FC = () => {
 
                     <div className="flex flex-col gap-2 lg:ml-4">
                       <AnimatedButton
+                        onClick={() => setExpandedCard(expandedCard === internship.id ? null : internship.id)}
+                        variant="secondary"
+                        animation="bounce"
+                        className="border-gray-300"
+                      >
+                        {expandedCard === internship.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        {expandedCard === internship.id ? 'Hide Details' : 'View Details'}
+                      </AnimatedButton>
+                      <AnimatedButton
+                        onClick={() => window.open(internship.applyUrl, '_blank')}
                         variant="primary"
                         animation="glow"
                         className="bg-green-600 text-white hover:bg-green-700"
@@ -439,14 +504,46 @@ const StudentGuidance: React.FC = () => {
                         <ExternalLink className="w-4 h-4" />
                         Apply Now
                       </AnimatedButton>
-                      <AnimatedButton
-                        variant="secondary"
-                        animation="bounce"
-                        className="border-gray-300"
-                      >
-                        Save for Later
-                      </AnimatedButton>
                     </div>
+
+                    {/* Expanded Details Section for Internships */}
+                    <AnimatePresence>
+                      {expandedCard === internship.id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-4 pt-4 border-t border-gray-200 col-span-full"
+                        >
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <h4 className="font-semibold text-white mb-2">Stipend Range</h4>
+                              <p className="text-white">{internship.stipend}</p>
+                              
+                              <h4 className="font-semibold text-white mt-4 mb-2">Duration</h4>
+                              <p className="text-white">{internship.duration}</p>
+                              
+                              <h4 className="font-semibold text-white mt-4 mb-2">Location Type</h4>
+                              <p className="text-white">{internship.location}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-white mb-2">Skills You'll Learn</h4>
+                              <div className="flex flex-wrap gap-1">
+                                {internship.requirements.map((skill, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-green-100 text-black text-xs rounded">
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                              
+                              <h4 className="font-semibold text-white mt-4 mb-2">Application Process</h4>
+                              <p className="text-white text-xs">Apply online → Resume screening → Technical round → HR round</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </AnimatedCard>
               ))}
