@@ -197,7 +197,7 @@ async function fetchJobRecommendations(
       requirements: ['Java', 'Spring Boot', 'React', 'SQL', 'Problem Solving'],
       fitScore: 0,
       source: 'Naukri.com',
-      url: 'https://naukri.com/jobs/123456'
+      url: 'https://www.naukri.com/job-listings-Software-Engineer-TCS-Pune-0-to-3-years-210925012345'
     },
     {
       id: '2',
@@ -209,7 +209,7 @@ async function fetchJobRecommendations(
       requirements: ['Python', 'Machine Learning', 'SQL', 'Power BI', 'Statistics'],
       fitScore: 0,
       source: 'LinkedIn India',
-      url: 'https://linkedin.com/jobs/789012'
+      url: 'https://www.linkedin.com/jobs/view/3789012345'
     },
     {
       id: '3',
@@ -221,7 +221,7 @@ async function fetchJobRecommendations(
       requirements: ['Product Management', 'Analytics', 'Communication', 'Agile', 'Leadership'],
       fitScore: 0,
       source: 'Glassdoor India',
-      url: 'https://glassdoor.co.in/jobs/345678'
+      url: 'https://www.glassdoor.co.in/job-listing/product-manager-flipkart-bangalore-JV_IC2940587_KO0,15_IL.16,25_IC2940587.htm'
     },
     {
       id: '4',
@@ -233,7 +233,7 @@ async function fetchJobRecommendations(
       requirements: ['Figma', 'User Research', 'Prototyping', 'Design Thinking', 'Mobile Design'],
       fitScore: 0,
       source: 'AngelList India',
-      url: 'https://angel.co/jobs/456789'
+      url: 'https://wellfound.com/jobs/2456789-ui-ux-designer-at-zomato'
     },
     {
       id: '5',
@@ -245,7 +245,7 @@ async function fetchJobRecommendations(
       requirements: ['Digital Marketing', 'Google Ads', 'Facebook Ads', 'Analytics', 'Content Strategy'],
       fitScore: 0,
       source: 'Indeed India',
-      url: 'https://indeed.co.in/jobs/567890'
+      url: 'https://in.indeed.com/viewjob?jk=567890abcdef'
     },
     {
       id: '6',
@@ -257,7 +257,7 @@ async function fetchJobRecommendations(
       requirements: ['AWS', 'Docker', 'Kubernetes', 'Jenkins', 'Linux', 'Python'],
       fitScore: 0,
       source: 'Monster India',
-      url: 'https://monsterindia.com/jobs/678901'
+      url: 'https://www.monsterindia.com/job/senior-developer-678901.html'
     },
     {
       id: '7',
@@ -269,7 +269,7 @@ async function fetchJobRecommendations(
       requirements: ['Business Analysis', 'SQL', 'Excel', 'Banking Domain', 'Communication'],
       fitScore: 0,
       source: 'Naukri.com',
-      url: 'https://naukri.com/jobs/789012'
+      url: 'https://www.naukri.com/job-listings-Business-Analyst-HDFC-Bank-Mumbai-2-to-5-years-210925789012'
     },
     {
       id: '8',
@@ -281,7 +281,7 @@ async function fetchJobRecommendations(
       requirements: ['React', 'JavaScript', 'TypeScript', 'CSS', 'Mobile Development'],
       fitScore: 0,
       source: 'Freshersworld',
-      url: 'https://freshersworld.com/jobs/890123'
+      url: 'https://www.freshersworld.com/jobs/jobdetails/Frontend-Developer-Byjus-890123'
     },
     // Government and Banking Jobs
     {
@@ -294,7 +294,7 @@ async function fetchJobRecommendations(
       requirements: ['Banking Knowledge', 'Communication', 'Leadership', 'Customer Service', 'Financial Analysis'],
       fitScore: 0,
       source: 'SBI Careers',
-      url: 'https://sbi.co.in/careers/po-recruitment'
+      url: 'https://www.sbi.co.in/web/careers/career-opportunities/probationary-officer-recruitment'
     },
     {
       id: '10',
@@ -306,7 +306,7 @@ async function fetchJobRecommendations(
       requirements: ['Engineering Degree', 'Technical Knowledge', 'Problem Solving', 'Project Management'],
       fitScore: 0,
       source: 'RRB Official',
-      url: 'https://indianrailways.gov.in/jobs/ae-recruitment'
+      url: 'https://www.indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,1,304,366,554,589'
     },
     // Startup and New-age Companies
     {
@@ -319,7 +319,7 @@ async function fetchJobRecommendations(
       requirements: ['Growth Marketing', 'Analytics', 'A/B Testing', 'SQL', 'Digital Marketing'],
       fitScore: 0,
       source: 'LinkedIn India',
-      url: 'https://linkedin.com/jobs/growth-ola'
+      url: 'https://www.linkedin.com/jobs/view/3456789012'
     },
     {
       id: '12',
@@ -331,7 +331,7 @@ async function fetchJobRecommendations(
       requirements: ['Content Writing', 'Research', 'Education Background', 'Communication', 'Subject Expertise'],
       fitScore: 0,
       source: 'InternShala',
-      url: 'https://internshala.com/jobs/content-writer-unacademy'
+      url: 'https://internshala.com/job/detail/content-writer-job-in-bangalore-at-unacademy1634567890'
     },
     // Consulting and Finance
     {
@@ -344,7 +344,7 @@ async function fetchJobRecommendations(
       requirements: ['MBA', 'Consulting', 'Problem Solving', 'Communication', 'Analytics'],
       fitScore: 0,
       source: 'Glassdoor India',
-      url: 'https://glassdoor.co.in/jobs/deloitte-mt'
+      url: 'https://www.glassdoor.co.in/job-listing/management-trainee-deloitte-mumbai-JV_IC2940809_KO0,17_IL.18,24_IC2940809.htm'
     },
     {
       id: '14',
@@ -356,7 +356,7 @@ async function fetchJobRecommendations(
       requirements: ['Finance', 'Excel', 'Financial Modeling', 'Banking', 'Risk Analysis'],
       fitScore: 0,
       source: 'Naukri.com',
-      url: 'https://naukri.com/jobs/icici-financial-analyst'
+      url: 'https://www.naukri.com/job-listings-Financial-Analyst-ICICI-Bank-Chennai-1-to-4-years-210925556789'
     },
     // Entry-level and Internship opportunities
     {
@@ -369,7 +369,7 @@ async function fetchJobRecommendations(
       requirements: ['MBA/B.Tech', 'Communication', 'Sales Aptitude', 'Leadership Potential', 'Market Research'],
       fitScore: 0,
       source: 'Company Website',
-      url: 'https://asianpaints.com/careers/mt-sales'
+      url: 'https://www.asianpaints.com/about-asian-paints/careers/management-trainee-sales.html'
     }
   ]
 
