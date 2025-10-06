@@ -310,6 +310,55 @@ async function fetchJobRecommendations(
       source: 'RRB Official',
       url: 'https://www.indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,1,304,366,554,589'
     },
+    // Government College Jobs
+    {
+      id: '22',
+      title: 'Assistant Professor',
+      company: 'IIT Bombay',
+      location: 'Mumbai, Maharashtra',
+      salary: '₹70,000 - ₹1,20,000/month',
+      description: 'Teach undergraduate and postgraduate students, conduct research, and participate in academic committees at IIT Bombay.',
+      requirements: ['PhD', 'Teaching', 'Research', 'Academic Writing', 'Subject Expertise'],
+      fitScore: 0,
+      source: 'IIT Careers',
+      url: 'https://www.iitb.ac.in/en/careers-iitb'
+    },
+    {
+      id: '23',
+      title: 'Lecturer',
+      company: 'Delhi University',
+      location: 'Delhi',
+      salary: '₹60,000 - ₹1,00,000/month',
+      description: 'Deliver lectures, guide student projects, and contribute to curriculum development at Delhi University.',
+      requirements: ['Masters', 'Teaching', 'Curriculum Development', 'Student Mentoring'],
+      fitScore: 0,
+      source: 'DU Careers',
+      url: 'https://www.du.ac.in/du/index.php?page=work-with-du'
+    },
+    {
+      id: '24',
+      title: 'Junior Research Fellow',
+      company: 'IISc Bangalore',
+      location: 'Bangalore, Karnataka',
+      salary: '₹31,000 - ₹35,000/month',
+      description: 'Assist in research projects, publish papers, and collaborate with faculty at IISc Bangalore.',
+      requirements: ['Masters', 'Research', 'Lab Work', 'Academic Writing'],
+      fitScore: 0,
+      source: 'IISc Careers',
+      url: 'https://www.iisc.ac.in/positions-open/'
+    },
+    {
+      id: '25',
+      title: 'Lab Assistant',
+      company: 'NIT Trichy',
+      location: 'Tiruchirappalli, Tamil Nadu',
+      salary: '₹25,000 - ₹40,000/month',
+      description: 'Support laboratory sessions, maintain equipment, and assist faculty at NIT Trichy.',
+      requirements: ['BSc', 'Lab Management', 'Technical Skills', 'Safety Procedures'],
+      fitScore: 0,
+      source: 'NIT Careers',
+      url: 'https://www.nitt.edu/home/other/jobs/'
+    },
     // Startup and New-age Companies
     {
       id: '11',

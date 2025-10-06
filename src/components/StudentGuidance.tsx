@@ -35,6 +35,12 @@ interface Internship {
   applyUrl: string
 }
 
+const tabList = [
+  { key: 'colleges', label: 'Top Colleges', icon: Building },
+  { key: 'internships', label: 'Internships', icon: BookOpen },
+  { key: 'career-paths', label: 'Career Paths', icon: Award }
+];
+
 const StudentGuidance = () => {
   const [activeTab, setActiveTab] = useState('colleges')
   const [selectedType, setSelectedType] = useState('all')
@@ -108,6 +114,332 @@ const StudentGuidance = () => {
       entranceExam: 'JEE Main',
       fees: '₹1,50,000/year',
       website: 'https://www.nitt.edu/'
+    },
+      {
+        id: '11',
+        name: 'IIT Delhi',
+        location: 'New Delhi',
+        type: 'IIT',
+        rating: 4.8,
+        averagePackage: '₹18-22 LPA',
+        topRecruiters: ['Google', 'Amazon', 'Microsoft', 'Apple'],
+        courses: ['B.Tech CSE', 'B.Tech Civil', 'M.Tech', 'PhD'],
+        entranceExam: 'JEE Advanced',
+        fees: '₹2,40,000/year',
+        website: 'https://home.iitd.ac.in/'
+      },
+      {
+        id: '12',
+        name: 'IIT Madras',
+        location: 'Chennai, Tamil Nadu',
+        type: 'IIT',
+        rating: 4.8,
+        averagePackage: '₹17-21 LPA',
+        topRecruiters: ['Microsoft', 'Google', 'Qualcomm', 'Texas Instruments'],
+        courses: ['B.Tech', 'M.Tech', 'MS', 'PhD'],
+        entranceExam: 'JEE Advanced',
+        fees: '₹2,30,000/year',
+        website: 'https://www.iitm.ac.in/'
+      },
+      {
+        id: '13',
+        name: 'IIT Kanpur',
+        location: 'Kanpur, Uttar Pradesh',
+        type: 'IIT',
+        rating: 4.7,
+        averagePackage: '₹16-20 LPA',
+        topRecruiters: ['Google', 'Amazon', 'Flipkart', 'Ola'],
+        courses: ['B.Tech', 'M.Tech', 'MBA', 'PhD'],
+        entranceExam: 'JEE Advanced',
+        fees: '₹2,20,000/year',
+        website: 'https://www.iitk.ac.in/'
+      },
+      {
+        id: '14',
+        name: 'IIT Kharagpur',
+        location: 'Kharagpur, West Bengal',
+        type: 'IIT',
+        rating: 4.7,
+        averagePackage: '₹15-19 LPA',
+        topRecruiters: ['Microsoft', 'Google', 'Tata Steel', 'Wipro'],
+        courses: ['B.Tech', 'M.Tech', 'LLB', 'PhD'],
+        entranceExam: 'JEE Advanced',
+        fees: '₹2,10,000/year',
+        website: 'https://www.iitkgp.ac.in/'
+      },
+      {
+        id: '15',
+        name: 'NIT Surathkal',
+        location: 'Mangalore, Karnataka',
+        type: 'NIT',
+        rating: 4.5,
+        averagePackage: '₹9-13 LPA',
+        topRecruiters: ['Amazon', 'Microsoft', 'TCS', 'Wipro'],
+        courses: ['B.Tech', 'M.Tech', 'MBA'],
+        entranceExam: 'JEE Main',
+        fees: '₹1,40,000/year',
+        website: 'https://www.nitk.ac.in/'
+      },
+      {
+        id: '16',
+        name: 'NIT Warangal',
+        location: 'Warangal, Telangana',
+        type: 'NIT',
+        rating: 4.5,
+        averagePackage: '₹8-12 LPA',
+        topRecruiters: ['TCS', 'Infosys', 'Cognizant', 'Capgemini'],
+        courses: ['B.Tech', 'M.Tech', 'PhD'],
+        entranceExam: 'JEE Main',
+        fees: '₹1,35,000/year',
+        website: 'https://www.nitw.ac.in/'
+      },
+      {
+        id: '17',
+        name: 'NIT Rourkela',
+        location: 'Rourkela, Odisha',
+        type: 'NIT',
+        rating: 4.4,
+        averagePackage: '₹7-11 LPA',
+        topRecruiters: ['TCS', 'Wipro', 'Infosys', 'Vedanta'],
+        courses: ['B.Tech', 'M.Tech', 'MBA'],
+        entranceExam: 'JEE Main',
+        fees: '₹1,30,000/year',
+        website: 'https://www.nitrkl.ac.in/'
+      },
+      {
+        id: '18',
+        name: 'NIT Calicut',
+        location: 'Calicut, Kerala',
+        type: 'NIT',
+        rating: 4.3,
+        averagePackage: '₹6-10 LPA',
+        topRecruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant'],
+        courses: ['B.Tech', 'M.Tech', 'PhD'],
+        entranceExam: 'JEE Main',
+        fees: '₹1,25,000/year',
+        website: 'https://www.nitc.ac.in/'
+      },
+      {
+        id: '19',
+        name: 'IIM Bangalore',
+        location: 'Bangalore, Karnataka',
+        type: 'IIM',
+        rating: 4.8,
+        averagePackage: '₹24-28 LPA',
+        topRecruiters: ['McKinsey', 'BCG', 'Amazon', 'Accenture'],
+        courses: ['MBA', 'PGPEM', 'PhD'],
+        entranceExam: 'CAT',
+        fees: '₹23,00,000 (2 years)',
+        website: 'https://www.iimb.ac.in/'
+      },
+      {
+        id: '20',
+        name: 'IIM Calcutta',
+        location: 'Kolkata, West Bengal',
+        type: 'IIM',
+        rating: 4.8,
+        averagePackage: '₹23-27 LPA',
+        topRecruiters: ['BCG', 'McKinsey', 'Goldman Sachs', 'Tata'],
+        courses: ['MBA', 'PGDBA', 'PhD'],
+        entranceExam: 'CAT',
+        fees: '₹22,00,000 (2 years)',
+        website: 'https://www.iimcal.ac.in/'
+      },
+      {
+        id: '21',
+        name: 'IIM Lucknow',
+        location: 'Lucknow, Uttar Pradesh',
+        type: 'IIM',
+        rating: 4.7,
+        averagePackage: '₹22-26 LPA',
+        topRecruiters: ['Amazon', 'Accenture', 'Deloitte', 'HUL'],
+        courses: ['MBA', 'PGP', 'PhD'],
+        entranceExam: 'CAT',
+        fees: '₹21,00,000 (2 years)',
+        website: 'https://www.iiml.ac.in/'
+      },
+      {
+        id: '22',
+        name: 'IIM Indore',
+        location: 'Indore, Madhya Pradesh',
+        type: 'IIM',
+        rating: 4.6,
+        averagePackage: '₹21-25 LPA',
+        topRecruiters: ['Deloitte', 'Amazon', 'BCG', 'ICICI'],
+        courses: ['MBA', 'IPM', 'PhD'],
+        entranceExam: 'CAT',
+        fees: '₹20,00,000 (2 years)',
+        website: 'https://www.iimidr.ac.in/'
+      },
+      {
+        id: '23',
+        name: 'CMC Vellore',
+        location: 'Vellore, Tamil Nadu',
+        type: 'Medical',
+        rating: 4.7,
+        averagePackage: '₹10-13 LPA',
+        topRecruiters: ['Apollo Hospitals', 'Fortis', 'Max Healthcare'],
+        courses: ['MBBS', 'MD', 'MS', 'B.Sc Nursing'],
+        entranceExam: 'NEET',
+        fees: '₹1,20,000/year',
+        website: 'https://www.cmch-vellore.edu/'
+      },
+      {
+        id: '24',
+        name: 'JIPMER',
+        location: 'Puducherry',
+        type: 'Medical',
+        rating: 4.6,
+        averagePackage: '₹9-12 LPA',
+        topRecruiters: ['AIIMS', 'Apollo Hospitals', 'Fortis'],
+        courses: ['MBBS', 'MD', 'MS', 'B.Sc Nursing'],
+        entranceExam: 'NEET',
+        fees: '₹1,10,000/year',
+        website: 'https://www.jipmer.edu.in/'
+      },
+      {
+        id: '25',
+        name: 'Kasturba Medical College',
+        location: 'Manipal, Karnataka',
+        type: 'Medical',
+        rating: 4.5,
+        averagePackage: '₹8-11 LPA',
+        topRecruiters: ['Manipal Hospitals', 'Apollo', 'Fortis'],
+        courses: ['MBBS', 'MD', 'MS', 'BPT'],
+        entranceExam: 'NEET',
+        fees: '₹1,00,000/year',
+        website: 'https://manipal.edu/kmc-manipal.html'
+      },
+      {
+        id: '26',
+        name: 'Maulana Azad Medical College',
+        location: 'New Delhi',
+        type: 'Medical',
+        rating: 4.5,
+        averagePackage: '₹7-10 LPA',
+        topRecruiters: ['Apollo', 'Fortis', 'Max Healthcare'],
+        courses: ['MBBS', 'MD', 'MS'],
+        entranceExam: 'NEET',
+        fees: '₹90,000/year',
+        website: 'https://www.mamc.ac.in/'
+      },
+      {
+        id: '27',
+        name: 'VIT Vellore',
+        location: 'Vellore, Tamil Nadu',
+        type: 'Private',
+        rating: 4.6,
+        averagePackage: '₹7-10 LPA',
+        topRecruiters: ['Amazon', 'Microsoft', 'TCS', 'Wipro'],
+        courses: ['B.Tech', 'M.Tech', 'MBA'],
+        entranceExam: 'VITEEE',
+        fees: '₹3,00,000/year',
+        website: 'https://vit.ac.in/'
+      },
+      {
+        id: '28',
+        name: 'SRM Institute of Science and Technology',
+        location: 'Chennai, Tamil Nadu',
+        type: 'Private',
+        rating: 4.5,
+        averagePackage: '₹6-9 LPA',
+        topRecruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant'],
+        courses: ['B.Tech', 'M.Tech', 'MBA'],
+        entranceExam: 'SRMJEEE',
+        fees: '₹2,80,000/year',
+        website: 'https://www.srmist.edu.in/'
+      },
+      {
+        id: '29',
+        name: 'Manipal University',
+        location: 'Manipal, Karnataka',
+        type: 'Private',
+        rating: 4.5,
+        averagePackage: '₹6-8 LPA',
+        topRecruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant'],
+        courses: ['B.Tech', 'M.Tech', 'MBA', 'BBA'],
+        entranceExam: 'MET',
+        fees: '₹3,20,000/year',
+        website: 'https://manipal.edu/'
+      },
+      {
+        id: '30',
+        name: 'Amity University',
+        location: 'Noida, Uttar Pradesh',
+        type: 'Private',
+        rating: 4.4,
+        averagePackage: '₹5-7 LPA',
+        topRecruiters: ['TCS', 'Wipro', 'Infosys', 'Cognizant'],
+        courses: ['B.Tech', 'MBA', 'BBA', 'M.Tech'],
+        entranceExam: 'Amity JEE',
+        fees: '₹2,50,000/year',
+        website: 'https://www.amity.edu/'
+      },
+    // Government Colleges
+    {
+      id: '6',
+      name: 'Delhi University (DU)',
+      location: 'New Delhi',
+      type: 'Government',
+      rating: 4.5,
+      averagePackage: '₹6-10 LPA',
+      topRecruiters: ['Deloitte', 'KPMG', 'EY', 'Google', 'ZS Associates'],
+      courses: ['B.A.', 'B.Sc.', 'B.Com', 'M.A.', 'M.Sc.', 'MBA'],
+      entranceExam: 'CUET',
+      fees: '₹20,000/year',
+      website: 'https://www.du.ac.in/'
+    },
+    {
+      id: '7',
+      name: 'Jadavpur University',
+      location: 'Kolkata, West Bengal',
+      type: 'Government',
+      rating: 4.4,
+      averagePackage: '₹5-8 LPA',
+      topRecruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant', 'IBM'],
+      courses: ['B.Tech', 'M.Tech', 'B.A.', 'M.A.', 'PhD'],
+      entranceExam: 'WBJEE',
+      fees: '₹12,000/year',
+      website: 'https://www.jaduniv.edu.in/'
+    },
+    {
+      id: '8',
+      name: 'BHU (Banaras Hindu University)',
+      location: 'Varanasi, Uttar Pradesh',
+      type: 'Government',
+      rating: 4.3,
+      averagePackage: '₹4-7 LPA',
+      topRecruiters: ['ICICI Bank', 'HDFC Bank', 'TCS', 'Wipro', 'Dabur'],
+      courses: ['B.Sc.', 'B.A.', 'B.Com', 'M.Sc.', 'MBA', 'PhD'],
+      entranceExam: 'CUET',
+      fees: '₹15,000/year',
+      website: 'https://www.bhu.ac.in/'
+    },
+    {
+      id: '9',
+      name: 'Presidency University',
+      location: 'Kolkata, West Bengal',
+      type: 'Government',
+      rating: 4.2,
+      averagePackage: '₹3-6 LPA',
+      topRecruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant'],
+      courses: ['B.Sc.', 'B.A.', 'M.Sc.', 'M.A.', 'PhD'],
+      entranceExam: 'PUBDET',
+      fees: '₹10,000/year',
+      website: 'https://www.presiuniv.ac.in/'
+    },
+    {
+      id: '10',
+      name: 'Osmania University',
+      location: 'Hyderabad, Telangana',
+      type: 'Government',
+      rating: 4.1,
+      averagePackage: '₹3-5 LPA',
+      topRecruiters: ['Infosys', 'Wipro', 'TCS', 'Capgemini'],
+      courses: ['B.Sc.', 'B.A.', 'B.Com', 'M.Sc.', 'MBA'],
+      entranceExam: 'TS EAMCET',
+      fees: '₹15,000/year',
+      website: 'https://www.osmania.ac.in/'
     }
   ]
 
@@ -127,6 +459,58 @@ const StudentGuidance = () => {
       applyUrl: 'https://www.flipkart.com/careers'
     },
     {
+      id: '6',
+      title: 'Frontend Developer Intern',
+      company: 'Google',
+      location: 'Hyderabad, Telangana',
+      duration: '3 months',
+      stipend: '₹60,000/month',
+      description: 'Build UI components for Google products. Collaborate with design and backend teams.',
+      requirements: ['React', 'JavaScript', 'CSS', 'Teamwork'],
+      type: 'Tech',
+      applicationDeadline: '10th December 2024',
+      applyUrl: 'https://careers.google.com/'
+    },
+    {
+      id: '7',
+      title: 'Data Science Intern',
+      company: 'Microsoft',
+      location: 'Bangalore, Karnataka',
+      duration: '2 months',
+      stipend: '₹55,000/month',
+      description: 'Analyze large datasets and build predictive models for Microsoft products.',
+      requirements: ['Python', 'Machine Learning', 'Statistics', 'SQL'],
+      type: 'Tech',
+      applicationDeadline: '5th December 2024',
+      applyUrl: 'https://careers.microsoft.com/'
+    },
+    {
+      id: '8',
+      title: 'Mobile App Developer Intern',
+      company: 'Paytm',
+      location: 'Noida, Uttar Pradesh',
+      duration: '3 months',
+      stipend: '₹45,000/month',
+      description: 'Develop and test mobile applications for Paytm platform.',
+      requirements: ['Kotlin', 'Android', 'Problem Solving', 'APIs'],
+      type: 'Tech',
+      applicationDeadline: '20th December 2024',
+      applyUrl: 'https://paytm.com/careers'
+    },
+    {
+      id: '9',
+      title: 'Backend Developer Intern',
+      company: 'Amazon',
+      location: 'Chennai, Tamil Nadu',
+      duration: '2 months',
+      stipend: '₹50,000/month',
+      description: 'Work on scalable backend systems for Amazon services.',
+      requirements: ['Node.js', 'Databases', 'Cloud', 'Teamwork'],
+      type: 'Tech',
+      applicationDeadline: '18th December 2024',
+      applyUrl: 'https://www.amazon.jobs/en/'
+    },
+    {
       id: '2',
       title: 'Investment Banking Intern',
       company: 'Goldman Sachs',
@@ -138,6 +522,58 @@ const StudentGuidance = () => {
       type: 'Finance',
       applicationDeadline: '30th October 2024',
       applyUrl: 'https://www.goldmansachs.com/careers/'
+    },
+    {
+      id: '10',
+      title: 'Financial Analyst Intern',
+      company: 'ICICI Bank',
+      location: 'Mumbai, Maharashtra',
+      duration: '2 months',
+      stipend: '₹40,000/month',
+      description: 'Assist in financial analysis and reporting for ICICI Bank.',
+      requirements: ['Excel', 'Finance', 'Reporting', 'Communication'],
+      type: 'Finance',
+      applicationDeadline: '10th November 2024',
+      applyUrl: 'https://www.icicicareers.com/'
+    },
+    {
+      id: '11',
+      title: 'Audit Intern',
+      company: 'KPMG',
+      location: 'Delhi',
+      duration: '3 months',
+      stipend: '₹35,000/month',
+      description: 'Support audit teams in financial audits and compliance checks.',
+      requirements: ['Accounting', 'Excel', 'Attention to Detail', 'Teamwork'],
+      type: 'Finance',
+      applicationDeadline: '15th November 2024',
+      applyUrl: 'https://home.kpmg/in/en/home/careers.html'
+    },
+    {
+      id: '12',
+      title: 'Risk Management Intern',
+      company: 'HDFC Bank',
+      location: 'Pune, Maharashtra',
+      duration: '2 months',
+      stipend: '₹38,000/month',
+      description: 'Assist in risk analysis and management for HDFC Bank.',
+      requirements: ['Risk Analysis', 'Excel', 'Finance', 'Communication'],
+      type: 'Finance',
+      applicationDeadline: '22nd November 2024',
+      applyUrl: 'https://www.hdfcbank.com/careers'
+    },
+    {
+      id: '13',
+      title: 'Equity Research Intern',
+      company: 'Motilal Oswal',
+      location: 'Mumbai, Maharashtra',
+      duration: '2 months',
+      stipend: '₹36,000/month',
+      description: 'Conduct equity research and prepare investment reports.',
+      requirements: ['Equity Research', 'Finance', 'Excel', 'Analysis'],
+      type: 'Finance',
+      applicationDeadline: '28th November 2024',
+      applyUrl: 'https://careers.motilaloswal.com/'
     },
     {
       id: '3',
@@ -153,6 +589,58 @@ const StudentGuidance = () => {
       applyUrl: 'https://www.mckinsey.com/careers'
     },
     {
+      id: '14',
+      title: 'Strategy Consulting Intern',
+      company: 'BCG',
+      location: 'Bangalore, Karnataka',
+      duration: '2 months',
+      stipend: '₹75,000/month',
+      description: 'Support strategy projects for BCG clients in India.',
+      requirements: ['Strategy', 'Analytics', 'Communication', 'Teamwork'],
+      type: 'Consulting',
+      applicationDeadline: '18th November 2024',
+      applyUrl: 'https://careers.bcg.com/'
+    },
+    {
+      id: '15',
+      title: 'Business Analyst Intern',
+      company: 'Deloitte',
+      location: 'Hyderabad, Telangana',
+      duration: '2 months',
+      stipend: '₹70,000/month',
+      description: 'Assist in business analysis and process improvement projects.',
+      requirements: ['Business Analysis', 'Excel', 'Problem Solving', 'Communication'],
+      type: 'Consulting',
+      applicationDeadline: '25th November 2024',
+      applyUrl: 'https://www2.deloitte.com/in/en/careers.html'
+    },
+    {
+      id: '16',
+      title: 'Operations Consulting Intern',
+      company: 'Accenture',
+      location: 'Gurgaon, Haryana',
+      duration: '2 months',
+      stipend: '₹65,000/month',
+      description: 'Work on operations and supply chain consulting projects.',
+      requirements: ['Operations', 'Supply Chain', 'Excel', 'Teamwork'],
+      type: 'Consulting',
+      applicationDeadline: '30th November 2024',
+      applyUrl: 'https://www.accenture.com/in-en/careers'
+    },
+    {
+      id: '17',
+      title: 'Market Research Intern',
+      company: 'Nielsen',
+      location: 'Mumbai, Maharashtra',
+      duration: '2 months',
+      stipend: '₹60,000/month',
+      description: 'Conduct market research and data analysis for Nielsen clients.',
+      requirements: ['Market Research', 'Excel', 'Analysis', 'Communication'],
+      type: 'Consulting',
+      applicationDeadline: '5th December 2024',
+      applyUrl: 'https://www.nielsen.com/careers/'
+    },
+    {
       id: '4',
       title: 'Product Marketing Intern',
       company: 'Zomato',
@@ -166,6 +654,58 @@ const StudentGuidance = () => {
       applyUrl: 'https://www.zomato.com/careers'
     },
     {
+      id: '18',
+      title: 'Digital Marketing Intern',
+      company: 'Byju’s',
+      location: 'Bangalore, Karnataka',
+      duration: '2 months',
+      stipend: '₹30,000/month',
+      description: 'Assist in digital marketing campaigns and social media management.',
+      requirements: ['Digital Marketing', 'SEO', 'Content Creation', 'Analytics'],
+      type: 'Marketing',
+      applicationDeadline: '10th November 2024',
+      applyUrl: 'https://byjus.com/careers/'
+    },
+    {
+      id: '19',
+      title: 'Brand Management Intern',
+      company: 'HUL',
+      location: 'Mumbai, Maharashtra',
+      duration: '2 months',
+      stipend: '₹32,000/month',
+      description: 'Support brand management and marketing strategy for HUL products.',
+      requirements: ['Brand Management', 'Marketing', 'Analytics', 'Communication'],
+      type: 'Marketing',
+      applicationDeadline: '15th November 2024',
+      applyUrl: 'https://www.hul.in/careers/'
+    },
+    {
+      id: '20',
+      title: 'Content Marketing Intern',
+      company: 'Unacademy',
+      location: 'Remote',
+      duration: '2 months',
+      stipend: '₹28,000/month',
+      description: 'Create and manage content for Unacademy’s marketing channels.',
+      requirements: ['Content Marketing', 'Writing', 'SEO', 'Social Media'],
+      type: 'Marketing',
+      applicationDeadline: '20th November 2024',
+      applyUrl: 'https://unacademy.com/careers'
+    },
+    {
+      id: '21',
+      title: 'Social Media Intern',
+      company: 'Swiggy',
+      location: 'Bangalore, Karnataka',
+      duration: '2 months',
+      stipend: '₹27,000/month',
+      description: 'Manage and grow Swiggy’s social media presence.',
+      requirements: ['Social Media', 'Content Creation', 'Marketing', 'Analytics'],
+      type: 'Marketing',
+      applicationDeadline: '25th November 2024',
+      applyUrl: 'https://careers.swiggy.com/'
+    },
+    {
       id: '5',
       title: 'Research Intern',
       company: 'IIT Bombay',
@@ -177,7 +717,59 @@ const StudentGuidance = () => {
       type: 'Research',
       applicationDeadline: '10th December 2024',
       applyUrl: 'https://www.iitb.ac.in/en/research-opportunities'
-    }
+    },
+    {
+      id: '22',
+      title: 'Physics Research Intern',
+      company: 'TIFR',
+      location: 'Mumbai, Maharashtra',
+      duration: '3 months',
+      stipend: '₹25,000/month',
+      description: 'Participate in physics research projects at TIFR.',
+      requirements: ['Physics', 'Research', 'Data Analysis', 'Teamwork'],
+      type: 'Research',
+      applicationDeadline: '15th December 2024',
+      applyUrl: 'https://www.tifr.res.in/'
+    },
+    {
+      id: '23',
+      title: 'Biotech Research Intern',
+      company: 'IISc Bangalore',
+      location: 'Bangalore, Karnataka',
+      duration: '4 months',
+      stipend: '₹22,000/month',
+      description: 'Work on biotechnology research projects at IISc.',
+      requirements: ['Biotechnology', 'Research', 'Lab Skills', 'Teamwork'],
+      type: 'Research',
+      applicationDeadline: '20th December 2024',
+      applyUrl: 'https://iisc.ac.in/careers/'
+    },
+    {
+      id: '24',
+      title: 'AI Research Intern',
+      company: 'Google Research',
+      location: 'Bangalore, Karnataka',
+      duration: '3 months',
+      stipend: '₹30,000/month',
+      description: 'Contribute to AI research projects at Google.',
+      requirements: ['AI', 'Python', 'Machine Learning', 'Research'],
+      type: 'Research',
+      applicationDeadline: '25th December 2024',
+      applyUrl: 'https://careers.google.com/'
+    },
+    {
+      id: '25',
+      title: 'Environmental Research Intern',
+      company: 'TERI',
+      location: 'New Delhi',
+      duration: '2 months',
+      stipend: '₹18,000/month',
+      description: 'Assist in environmental research and sustainability projects.',
+      requirements: ['Environmental Science', 'Research', 'Data Analysis', 'Teamwork'],
+      type: 'Research',
+      applicationDeadline: '30th December 2024',
+      applyUrl: 'https://www.teriin.org/careers'
+    },
   ]
 
   const filteredColleges = colleges.filter(college => {
@@ -241,11 +833,7 @@ const StudentGuidance = () => {
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <div className="bg-gray-100 p-1 rounded-lg flex gap-1">
-          {[
-            { key: 'colleges', label: 'Top Colleges', icon: Building },
-            { key: 'internships', label: 'Internships', icon: BookOpen },
-            { key: 'career-paths', label: 'Career Paths', icon: Award }
-          ].map((tab) => (
+          {tabList.map((tab) => (
             <motion.button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
