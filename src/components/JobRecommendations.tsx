@@ -102,37 +102,53 @@ const JobRecommendations: React.FC = () => {
     return 0
   }
 
+  // Helper to remove duplicate jobs by id
+  const dedupeJobs = (jobs: Job[]): Job[] => {
+    const seen = new Set<string>();
+    return jobs.filter(job => {
+      if (seen.has(job.id)) return false;
+      seen.add(job.id);
+      return true;
+    });
+  };
+
   const filteredAndSortedJobs = React.useMemo(() => {
-    let filtered = jobs
+    let filtered = jobs;
 
     // Apply filters
     switch (filter) {
       case 'high-fit':
-        filtered = jobs.filter(job => job.fitScore >= 70)
-        break
+        filtered = jobs.filter(job => job.fitScore >= 70);
+        break;
       case 'remote':
-        filtered = jobs.filter(job => job.location.toLowerCase().includes('remote'))
-        break
+        filtered = jobs.filter(job => job.location.toLowerCase().includes('remote'));
+        break;
       default:
-        filtered = jobs
+        filtered = jobs;
     }
 
     // Apply sorting
+    let sorted: Job[];
     switch (sortBy) {
       case 'fit-score':
-        return filtered.sort((a, b) => b.fitScore - a.fitScore)
+        sorted = filtered.sort((a, b) => b.fitScore - a.fitScore);
+        break;
       case 'recent':
-        return filtered // Assuming jobs are already in recent order
+        sorted = filtered; // Assuming jobs are already in recent order
+        break;
       case 'salary':
-        return filtered.sort((a, b) => {
-          const aMax = extractMaxSalary(a.salary)
-          const bMax = extractMaxSalary(b.salary)
-          return bMax - aMax
-        })
+        sorted = filtered.sort((a, b) => {
+          const aMax = extractMaxSalary(a.salary);
+          const bMax = extractMaxSalary(b.salary);
+          return bMax - aMax;
+        });
+        break;
       default:
-        return filtered
+        sorted = filtered;
     }
-  }, [jobs, filter, sortBy])
+    // Remove duplicate jobs by id before rendering
+    return dedupeJobs(sorted);
+  }, [jobs, filter, sortBy]);
 
   if (loading) {
     return (

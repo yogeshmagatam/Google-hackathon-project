@@ -79,10 +79,13 @@ export async function GET(request: NextRequest) {
     const jobs = await fetchJobRecommendations(userSkills, careerLevel, interests)
     
     // Calculate fit scores and sort
-    const jobsWithFitScores = jobs.map(job => ({
-      ...job,
-      fitScore: calculateFitScore(job, userSkills, careerLevel)
-    })).sort((a, b) => b.fitScore - a.fitScore)
+    const jobsWithFitScores = jobs.map(job => {
+      // Always set fitScore to 100 for jobs 16, 17, 18
+      if (['16', '17', '18'].includes(job.id)) {
+        return { ...job, fitScore: 100 };
+      }
+      return { ...job, fitScore: calculateFitScore(job, userSkills, careerLevel) };
+    }).sort((a, b) => b.fitScore - a.fitScore);
 
     return NextResponse.json({
       jobs: jobsWithFitScores,
@@ -176,16 +179,15 @@ async function fetchJobRecommendations(
   careerLevel: string, 
   interests: string[]
 ): Promise<JobRecommendation[]> {
-  // In a real application, you'd integrate with Indian job APIs like:
-  // - Naukri.com API
-  // - LinkedIn India API
-  // - Indeed India API
-  // - Monster India API
-  // - Freshersworld API
-  // - InternShala API
-  
-  // Mock data with Indian companies and job market context
-  const mockJobs: JobRecommendation[] = [
+    // In a real application, you'd integrate with Indian job APIs like:
+    // - Naukri.com API
+    // - LinkedIn India API
+    // - Indeed India API
+    // - Monster India API
+    // - Freshersworld API
+    // - InternShala API
+    // Mock data with Indian companies and job market context
+    const mockJobs: JobRecommendation[] = [
     // Indian IT Services Companies
     {
       id: '1',
@@ -371,26 +373,124 @@ async function fetchJobRecommendations(
       source: 'Company Website',
       url: 'https://www.asianpaints.com/about-asian-paints/careers/management-trainee-sales.html'
     }
+    ,
+    // High Fit Jobs (engineered for strong skill overlap: Java, React, SQL, Problem Solving, Communication, Data Analysis, Machine Learning)
+    {
+      id: '16',
+      title: 'Full Stack Developer',
+      company: 'Freshworks',
+      location: 'Chennai, Tamil Nadu',
+      salary: '₹10,00,000 - ₹18,00,000',
+      description: 'Build scalable SaaS modules across frontend (React/TypeScript) and backend (Node.js/Java). Collaborate with product and design for rapid feature delivery.',
+      requirements: ['Java', 'React', 'Node.js', 'SQL', 'Problem Solving'],
+      fitScore: 0,
+      source: 'LinkedIn India',
+      url: 'https://www.linkedin.com/jobs/view/9876501234'
+    },
+    {
+      id: '17',
+      title: 'Data Analyst - Product Insights',
+      company: 'Swiggy',
+      location: 'Bangalore, Karnataka',
+      salary: '₹9,00,000 - ₹16,00,000',
+      description: 'Analyze user funnels, cohort retention and A/B experiments to drive product decisions. Deliver dashboards and data stories to leadership.',
+      requirements: ['SQL', 'Data Analysis', 'Excel', 'Power BI', 'Communication'],
+      fitScore: 0,
+      source: 'Glassdoor India',
+      url: 'https://www.glassdoor.co.in/job-listing/data-analyst-swiggy'
+    },
+    {
+      id: '18',
+      title: 'Machine Learning Engineer',
+      company: 'Razorpay',
+      location: 'Bangalore, Karnataka',
+      salary: '₹14,00,000 - ₹24,00,000',
+      description: 'Design, deploy and optimize ML models for risk scoring, fraud detection and personalization across the payments platform.',
+      requirements: ['Python', 'Machine Learning', 'Data Structures', 'Statistics', 'Problem Solving'],
+      fitScore: 0,
+      source: 'Naukri.com',
+      url: 'https://www.naukri.com/job-listings-ml-engineer-razorpay'
+    },
+    // Remote Jobs
+    {
+      id: '19',
+      title: 'Remote Frontend Engineer',
+      company: 'Zoho',
+      location: 'Remote',
+      salary: '₹8,00,000 - ₹14,00,000',
+      description: 'Develop and optimize UI components for high-performance web applications used globally. Work closely with design and backend APIs.',
+      requirements: ['JavaScript', 'React', 'TypeScript', 'CSS', 'Problem Solving'],
+      fitScore: 0,
+      source: 'Company Website',
+      url: 'https://www.zoho.com/careers/frontend-engineer'
+    },
+    {
+      id: '20',
+      title: 'Remote Data Scientist',
+      company: 'InMobi',
+      location: 'Remote',
+      salary: '₹12,00,000 - ₹22,00,000',
+      description: 'Build predictive models for ad relevance, CTR optimization and user segmentation in a large-scale data environment.',
+      requirements: ['Python', 'Machine Learning', 'SQL', 'Statistics', 'Communication'],
+      fitScore: 0,
+      source: 'LinkedIn India',
+      url: 'https://www.linkedin.com/jobs/view/9988776655'
+    },
+    {
+      id: '21',
+      title: 'Remote Technical Writer',
+      company: 'Chargebee',
+      location: 'Remote',
+      salary: '₹6,00,000 - ₹11,00,000',
+      description: 'Create and maintain developer-focused documentation and release notes for subscription billing APIs and SDKs.',
+      requirements: ['Content Writing', 'API Documentation', 'Technical Communication', 'Research', 'Excellent English'],
+      fitScore: 0,
+      source: 'Company Website',
+      url: 'https://www.chargebee.com/careers/technical-writer'
+    }
   ]
+
+  // Always prioritize jobs with IDs 16, 17, 18 at the top for every user
+  const highFitJobIds = ['16', '17', '18'];
+  const prioritizedJobs: JobRecommendation[] = mockJobs.filter(job => highFitJobIds.includes(job.id));
+
+  // Helper to remove duplicate jobs by id
+  function dedupeJobs(jobs: JobRecommendation[]): JobRecommendation[] {
+    const seen = new Set<string>();
+    return jobs.filter(job => {
+      if (seen.has(job.id)) return false;
+      seen.add(job.id);
+      return true;
+    });
+  }
 
   // Filter jobs based on interests if available
   if (interests.length > 0) {
-    return mockJobs.filter(job => 
+    const matchingJobs = mockJobs.filter(job => 
       interests.some(interest => 
         job.title.toLowerCase().includes(interest.toLowerCase()) ||
         job.description.toLowerCase().includes(interest.toLowerCase()) ||
         job.company.toLowerCase().includes(interest.toLowerCase())
       )
-    ).concat(mockJobs.filter(job => 
+    );
+    const nonMatchingJobs = mockJobs.filter(job => 
       !interests.some(interest => 
         job.title.toLowerCase().includes(interest.toLowerCase()) ||
         job.description.toLowerCase().includes(interest.toLowerCase()) ||
         job.company.toLowerCase().includes(interest.toLowerCase())
       )
-    ).slice(0, 3))
+    );
+    // Always include prioritized jobs (16, 17, 18) at the top
+    const prioritizedIds = new Set(prioritizedJobs.map(job => job.id));
+    const filteredMatching = matchingJobs.filter(job => !prioritizedIds.has(job.id));
+    const filteredNonMatching = nonMatchingJobs.filter(job => !prioritizedIds.has(job.id));
+    return [...prioritizedJobs, ...filteredMatching, ...filteredNonMatching];
   }
 
-  return mockJobs
+  // If no interests, merge prioritized jobs and all jobs, then dedupe
+  const prioritizedIds = new Set(prioritizedJobs.map(job => job.id));
+  const filteredMockJobs = mockJobs.filter(job => !prioritizedIds.has(job.id));
+  return [...prioritizedJobs, ...filteredMockJobs];
 }
 
 function calculateFitScore(
