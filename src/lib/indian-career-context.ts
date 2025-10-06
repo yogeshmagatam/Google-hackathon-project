@@ -302,17 +302,67 @@ export const indianSkillsFramework = {
 export const studentCareerGuidance = {
   byStream: {
     science: {
-      topCareers: ['Software Engineer', 'Data Scientist', 'Doctor', 'Research Scientist', 'Product Manager'],
+      topCareers: [
+        'Software Engineer',
+        'Data Scientist',
+        'Doctor',
+        'Research Scientist',
+        'Product Manager',
+        'Environmental Scientist',
+        'Robotics Engineer'
+      ],
       emergingFields: ['AI/ML Engineer', 'Cybersecurity Specialist', 'Biotech Researcher', 'Space Technology'],
       recommendedSkills: ['Programming', 'Mathematics', 'Research', 'Problem Solving', 'Critical Thinking']
     },
+    engineering: {
+      topCareers: [
+        'Mechanical Engineer',
+        'Civil Engineer',
+        'Electrical Engineer',
+        'Software Developer',
+        'Automobile Engineer',
+        'Aerospace Engineer',
+        'Chemical Engineer'
+      ],
+      emergingFields: ['Robotics', 'Renewable Energy', 'Nanotechnology', 'Smart Infrastructure'],
+      recommendedSkills: ['Design', 'Mathematics', 'Technical Drawing', 'Project Management', 'Problem Solving']
+    },
+    medical: {
+      topCareers: [
+        'Surgeon',
+        'Pediatrician',
+        'Dentist',
+        'Pharmacist',
+        'Veterinarian',
+        'Radiologist',
+        'Psychiatrist'
+      ],
+      emergingFields: ['Genetics', 'Telemedicine', 'Medical Informatics', 'Healthcare Management'],
+      recommendedSkills: ['Biology', 'Empathy', 'Attention to Detail', 'Communication', 'Teamwork']
+    },
     commerce: {
-      topCareers: ['Financial Analyst', 'Investment Banking', 'Management Consultant', 'Entrepreneur', 'CA/CS'],
+      topCareers: [
+        'Financial Analyst',
+        'Investment Banking',
+        'Management Consultant',
+        'Entrepreneur',
+        'CA/CS',
+        'Supply Chain Manager',
+        'Insurance Underwriter'
+      ],
       emergingFields: ['Fintech', 'Digital Marketing', 'Business Analytics', 'E-commerce'],
       recommendedSkills: ['Financial Analysis', 'Business Strategy', 'Communication', 'Leadership', 'Excel']
     },
     arts: {
-      topCareers: ['Civil Services', 'Journalism', 'Teaching', 'Content Writer', 'Social Worker'],
+      topCareers: [
+        'Civil Services',
+        'Journalism',
+        'Teaching',
+        'Content Writer',
+        'Social Worker',
+        'Psychologist',
+        'Event Manager'
+      ],
       emergingFields: ['Digital Content', 'UX Writing', 'Policy Research', 'NGO Leadership'],
       recommendedSkills: ['Communication', 'Research', 'Writing', 'Critical Thinking', 'Empathy']
     }
