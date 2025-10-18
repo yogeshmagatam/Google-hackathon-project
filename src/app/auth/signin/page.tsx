@@ -210,7 +210,7 @@ function SignInContent() {
             </p>
             {(!providers || Object.keys(providers).length <= 1) && (
               <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded border">
-                OAuth providers require proper configuration in environment variables.
+                Tip: OAuth providers (Google/GitHub) are optional and require client ID/secret in your .env. The Demo login above works without OAuth.
               </p>
             )}
           </div>
