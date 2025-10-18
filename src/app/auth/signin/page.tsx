@@ -35,15 +35,18 @@ function SignInContent() {
     
     try {
       const result = await signIn('demo', {
-        email,
-        name,
+        email: email || 'demo@example.com',
+        name: name || 'Demo User',
         redirect: false,
+        callbackUrl: '/'
       })
       
       if (result?.ok) {
-        router.push('/')
+        // Force a hard redirect to ensure session is loaded
+        window.location.href = '/'
       } else {
-        setError('Demo sign in failed. Please try again.')
+        setError(result?.error || 'Demo sign in failed. Please try again.')
+        console.error('Sign in failed:', result)
       }
     } catch (error) {
       console.error('Sign in error:', error)

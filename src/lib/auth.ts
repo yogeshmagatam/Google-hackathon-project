@@ -14,7 +14,6 @@ const isGitHubConfigured = process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CL
                           process.env.GITHUB_CLIENT_ID !== 'your-github-client-id'
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
   secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-development-only',
   debug: process.env.NODE_ENV === 'development',
   providers: [
@@ -36,59 +35,69 @@ export const authOptions: NextAuthOptions = {
         name: { label: "Name", type: "text", placeholder: "Demo User" }
       },
       async authorize(credentials) {
-        // For demo purposes - create or find user in database
-        if (credentials?.email) {
-          try {
-            // Try to find existing user
-            let user = await prisma.user.findUnique({
-              where: { email: credentials.email }
+        // For demo purposes - always allow with default values if not provided
+        const email = credentials?.email || 'demo@example.com'
+        const name = credentials?.name || 'Demo User'
+        
+        try {
+          // Try to find existing user
+          let user = await prisma.user.findUnique({
+            where: { email }
+          })
+
+          // Create user if doesn't exist
+          if (!user) {
+            user = await prisma.user.create({
+              data: {
+                email,
+                name,
+              }
             })
+          }
 
-            // Create user if doesn't exist
-            if (!user) {
-              user = await prisma.user.create({
-                data: {
-                  email: credentials.email,
-                  name: credentials.name || 'Demo User',
-                }
-              })
-            }
-
-            return {
-              id: user.id,
-              email: user.email,
-              name: user.name,
-            }
-          } catch (error) {
-            console.error('Demo auth error:', error)
-            // Fallback for demo
-            return {
-              id: `demo-${Date.now()}`,
-              email: credentials.email,
-              name: credentials.name || 'Demo User',
-            }
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+          }
+        } catch (error) {
+          console.error('Demo auth error:', error)
+          // Fallback for demo - return a valid user object
+          return {
+            id: `demo-${Date.now()}`,
+            email,
+            name,
           }
         }
-        return null
       },
     }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
+    async signIn({ user, account }) {
+      // Always allow demo sign in
+      if (account?.provider === 'demo') {
+        return true
+      }
+      return true
+    },
+    async session({ session, token }) {
       if (session?.user && token?.sub) {
         session.user.id = token.sub
       }
       return session
     },
-    jwt: async ({ user, token }) => {
+    async jwt({ user, token, account }) {
       if (user) {
-        token.uid = user.id
+        token.sub = user.id
+        token.email = user.email
+        token.name = user.name
       }
       return token
     },
   },
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
     signIn: '/auth/signin',

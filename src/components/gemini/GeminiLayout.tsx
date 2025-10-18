@@ -88,7 +88,17 @@ export default function GeminiLayout() {
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <AnimatedButton
-              onClick={() => signIn('demo', { callbackUrl: '/' })}
+              onClick={async () => {
+                const result = await signIn('demo', { 
+                  email: 'demo@example.com',
+                  name: 'Demo User',
+                  redirect: false,
+                  callbackUrl: '/'
+                })
+                if (result?.ok) {
+                  window.location.href = '/'
+                }
+              }}
               variant="default"
               animation="scale"
               className="w-full bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
