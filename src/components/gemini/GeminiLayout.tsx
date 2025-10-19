@@ -88,37 +88,6 @@ export default function GeminiLayout() {
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <AnimatedButton
-              onClick={async () => {
-                const result = await signIn('demo', { 
-                  email: 'demo@example.com',
-                  name: 'Demo User',
-                  redirect: false,
-                  callbackUrl: '/'
-                })
-                if (result?.ok) {
-                  window.location.href = '/'
-                }
-              }}
-              variant="default"
-              animation="scale"
-              className="w-full bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
-            >
-              <User className="w-5 h-5" />
-              Continue as Demo User
-            </AnimatedButton>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <AnimatedButton
               onClick={() => signIn('google', { callbackUrl: '/' })}
               variant="default"
               animation="glow"
